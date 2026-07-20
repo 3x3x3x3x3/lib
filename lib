@@ -1980,7 +1980,7 @@ local Library do
             ["Dark Gradient"] = FromRGB(211, 211, 211),
             ["Inactive Text"] = FromRGB(185, 185, 185),
             ["Element"] = FromRGB(34, 39, 45),
-            ["Accent"] = FromRGB(196, 231, 255),
+            ["Accent"] = FromRGB(170, 130, 255),
             ["Border"] = FromRGB(32, 36, 42)
         },
 
@@ -1993,7 +1993,7 @@ local Library do
             ["Dark Gradient"] = FromRGB(211, 202, 195),
             ["Inactive Text"] = FromRGB(179, 179, 179),
             ["Element"] = FromRGB(42, 32, 26),
-            ["Accent"] = FromRGB(253, 133, 21),
+            ["Accent"] = FromRGB(170, 130, 255),
             ["Border"] = FromRGB(42, 35, 32)
         },
 
@@ -2714,7 +2714,7 @@ local Library do
                 Items["OpenIcon"] = Instances:Create("ImageLabel", {
                     Parent = Items["RealDropdown"].Instance,
                     Name = "\0",
-                    ImageColor3 = FromRGB(196, 231, 255),
+                    ImageColor3 = FromRGB(170, 130, 255),
                     ScaleType = Enum.ScaleType.Fit,
                     BorderColor3 = FromRGB(0, 0, 0),
                     Size = UDim2New(0, 20, 0, 20),
@@ -2958,7 +2958,7 @@ local Library do
                 local CheckImage = Instances:Create("ImageLabel", {
                     Parent = OptionButton.Instance,
                     Name = "\0",
-                    ImageColor3 = FromRGB(196, 231, 255),
+                    ImageColor3 = FromRGB(170, 130, 255),
                     ScaleType = Enum.ScaleType.Fit,
                     BorderColor3 = FromRGB(0, 0, 0),
                     Size = UDim2New(0, 18, 0, 18),
@@ -3688,7 +3688,7 @@ local Library do
                     DropdownItems["OpenIcon"] = Instances:Create("ImageLabel", {
                         Parent = DropdownItems["RealDropdown"].Instance,
                         Name = "\0",
-                        ImageColor3 = FromRGB(196, 231, 255),
+                        ImageColor3 = FromRGB(170, 130, 255),
                         ScaleType = Enum.ScaleType.Fit,
                         BorderColor3 = FromRGB(0, 0, 0),
                         Size = UDim2New(0, 20, 0, 20),
@@ -3787,7 +3787,7 @@ local Library do
                     local CheckImage = Instances:Create("ImageLabel", {
                         Parent = OptionButton.Instance,
                         Name = "\0",
-                        ImageColor3 = FromRGB(196, 231, 255),
+                        ImageColor3 = FromRGB(170, 130, 255),
                         ScaleType = Enum.ScaleType.Fit,
                         BorderColor3 = FromRGB(0, 0, 0),
                         Size = UDim2New(0, 18, 0, 18),
@@ -4516,7 +4516,7 @@ local Library do
                     DropdownItems["OpenIcon"] = Instances:Create("ImageLabel", {
                         Parent = DropdownItems["RealDropdown"].Instance,
                         Name = "\0",
-                        ImageColor3 = FromRGB(196, 231, 255),
+                        ImageColor3 = FromRGB(170, 130, 255),
                         ScaleType = Enum.ScaleType.Fit,
                         BorderColor3 = FromRGB(0, 0, 0),
                         Size = UDim2New(0, 20, 0, 20),
@@ -4615,7 +4615,7 @@ local Library do
                     local CheckImage = Instances:Create("ImageLabel", {
                         Parent = OptionButton.Instance,
                         Name = "\0",
-                        ImageColor3 = FromRGB(196, 231, 255),
+                        ImageColor3 = FromRGB(170, 130, 255),
                         ScaleType = Enum.ScaleType.Fit,
                         BorderColor3 = FromRGB(0, 0, 0),
                         Size = UDim2New(0, 18, 0, 18),
@@ -6182,10 +6182,10 @@ local Library do
                 Items["Logo"] = Instances:Create("ImageLabel", {
                     Parent = Items["Topbar"].Instance,
                     Name = "\0",
-                    ImageColor3 = FromRGB(196, 231, 255),
+                    ImageColor3 = FromRGB(170, 130, 255),
                     ScaleType = Enum.ScaleType.Fit,
                     BorderColor3 = FromRGB(0, 0, 0),
-                    Size = UDim2New(0, 16, 0, 16),
+                    Size = UDim2New(0, 20, 0, 20),
                     AnchorPoint = Vector2New(0, 0.5),
                     Image = "rbxassetid://103982381939732",
                     BackgroundTransparency = 1,
@@ -6364,13 +6364,13 @@ local Library do
                 Items["SendImageLabel"] = Instances:Create("ImageLabel", {
                     Parent = Items["SendMessageButton"].Instance,
                     Name = "\0",
-                    ImageColor3 = FromRGB(196, 231, 255),
+                    ImageColor3 = FromRGB(170, 130, 255),
                     BorderColor3 = FromRGB(0, 0, 0),
                     AnchorPoint = Vector2New(0.5, 0.5),
                     Image = "rbxassetid://93681479181206",
                     BackgroundTransparency = 1,
                     Position = UDim2New(0.5, 0, 0.5, 0),
-                    Size = UDim2New(0, 16, 0, 16),
+                    Size = UDim2New(0, 20, 0, 20),
                     BorderSizePixel = 0,
                     BackgroundColor3 = FromRGB(255, 255, 255)
                 })  Items["SendImageLabel"]:AddToTheme({ImageColor3 = "Accent"})
@@ -6381,7 +6381,7 @@ local Library do
                     AutomaticCanvasSize = Enum.AutomaticSize.Y,
                     BorderSizePixel = 0,
                     CanvasSize = UDim2New(0, 0, 0, 0),
-                    ScrollBarImageColor3 = FromRGB(196, 231, 255),
+                    ScrollBarImageColor3 = FromRGB(170, 130, 255),
                     MidImage = "rbxassetid://76010408336709",
                     BorderColor3 = FromRGB(0, 0, 0),
                     ScrollBarThickness = 2,
@@ -6852,7 +6852,7 @@ local Library do
                 Items["Logo"] = Instances:Create("ImageLabel", {
                     Parent = Items["Watermark"].Instance,
                     Name = "\0",
-                    ImageColor3 = FromRGB(196, 231, 255),
+                    ImageColor3 = FromRGB(170, 130, 255),
                     ScaleType = Enum.ScaleType.Fit,
                     BorderColor3 = FromRGB(0, 0, 0),
                     Size = UDim2New(0, 22, 0, 22),
@@ -6937,7 +6937,7 @@ local Library do
                 Items["Icon"] = Instances:Create("ImageLabel", {
                     Parent = Items["KeybindsList"].Instance,
                     Name = "\0",
-                    ImageColor3 = FromRGB(196, 231, 255),
+                    ImageColor3 = FromRGB(170, 130, 255),
                     ScaleType = Enum.ScaleType.Fit,
                     BorderColor3 = FromRGB(0, 0, 0),
                     Image = "rbxassetid://89224403789635",
@@ -7225,7 +7225,7 @@ local Library do
                 Items["Logo"] = Instances:Create("ImageLabel", {
                     Parent = Items["Topbar"].Instance,
                     Name = "\0",
-                    ImageColor3 = FromRGB(196, 231, 255),
+                    ImageColor3 = FromRGB(170, 130, 255),
                     ScaleType = Enum.ScaleType.Fit,
                     BorderColor3 = FromRGB(0, 0, 0),
                     Size = UDim2New(0, 22, 0, 22),
@@ -8384,7 +8384,7 @@ local Library do
                     DropdownItems["OpenIcon"] = Instances:Create("ImageLabel", {
                         Parent = DropdownItems["RealDropdown"].Instance,
                         Name = "\0",
-                        ImageColor3 = FromRGB(196, 231, 255),
+                        ImageColor3 = FromRGB(170, 130, 255),
                         ScaleType = Enum.ScaleType.Fit,
                         BorderColor3 = FromRGB(0, 0, 0),
                         Size = UDim2New(0, 20, 0, 20),
@@ -8490,7 +8490,7 @@ local Library do
                     local CheckImage = Instances:Create("ImageLabel", {
                         Parent = OptionButton.Instance,
                         Name = "\0",
-                        ImageColor3 = FromRGB(196, 231, 255),
+                        ImageColor3 = FromRGB(170, 130, 255),
                         ScaleType = Enum.ScaleType.Fit,
                         BorderColor3 = FromRGB(0, 0, 0),
                         Size = UDim2New(0, 18, 0, 18),
@@ -9031,7 +9031,7 @@ local Library do
                 Items["Icon"] = Instances:Create("ImageLabel", {
                     Parent = Items["Topbar"].Instance,
                     Name = "\0",
-                    ImageColor3 = FromRGB(196, 231, 255),
+                    ImageColor3 = FromRGB(170, 130, 255),
                     ScaleType = Enum.ScaleType.Fit,
                     BorderColor3 = FromRGB(0, 0, 0),
                     Size = UDim2New(0, 18, 0, 18),
@@ -9393,7 +9393,7 @@ local Library do
                     BorderColor3 = FromRGB(0, 0, 0),
                     ZIndex = 2,
                     BorderSizePixel = 0,
-                    BackgroundColor3 = FromRGB(196, 231, 255)
+                    BackgroundColor3 = FromRGB(170, 130, 255)
                 })  Items["Accent"]:AddToTheme({BackgroundColor3 = "Accent"})
 
                 Instances:Create("UICorner", {
