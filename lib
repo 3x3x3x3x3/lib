@@ -1536,12 +1536,19 @@ local Library do
                 [Property] = Visibility and OldTransparency or 1
             }, true)
 
-            Library:Connect(NewTween.Tween.Completed, function()
-                if not Visibility then
+            if NewTween and NewTween.Tween then
+                    Library:Connect(NewTween.Tween.Completed, function()
+                        if not Visibility then
                     task.wait()
                     Item[Property] = OldTransparency
                 end
-            end)
+                    end)
+                else
+                    if not Visibility then
+                    task.wait()
+                    Item[Property] = OldTransparency
+                end
+                end
 
             return NewTween
         end
@@ -2110,7 +2117,7 @@ local Library do
     end
 
     Library.Round = function(self, Number, Float)
-        local Multiplier = 1 / (Float or 1)
+        local Multiplier = (Float and Float ~= 0) and (1 / Float) or 1
         return MathFloor(Number * Multiplier) / Multiplier
     end
 
@@ -3011,17 +3018,17 @@ local Library do
                 end
 
                 Dropdown.IsOpen = Bool
-                Items["OptionHolder"].Instance.Parent = Bool and Library.Holder.Instance or Library.UnusedHolder.Instance
+                Items["Holder"].Instance.Parent = Bool and Library.Holder.Instance or Library.UnusedHolder.Instance
 
                 Debounce = true
 
                 if Bool then
-                    Items["OptionHolder"].Instance.Visible = true
+                    Items["Holder"].Instance.Visible = true
                     Items["Holder"].Instance.ZIndex = 11
 
                     RenderStepped = RunService.RenderStepped:Connect(function()
-                        Items["OptionHolder"].Instance.Position = UDim2New(0, Items["RealDropdown"].Instance.AbsolutePosition.X, 0, Items["RealDropdown"].Instance.AbsolutePosition.Y + 30)
-                        Items["OptionHolder"].Instance.Size = UDim2New(0, Items["RealDropdown"].Instance.AbsoluteSize.X, 0, Data.MaxSize or 165)
+                        Items["Holder"].Instance.Position = UDim2New(0, Items["RealDropdown"].Instance.AbsolutePosition.X, 0, Items["RealDropdown"].Instance.AbsolutePosition.Y + 30)
+                        Items["Holder"].Instance.Size = UDim2New(0, Items["RealDropdown"].Instance.AbsoluteSize.X, 0, Data.MaxSize or 165)
                     end)
 
                     for Index, Value in Library.OpenFrames do
@@ -3042,8 +3049,8 @@ local Library do
                     end
                 end
 
-                local Descendants = Items["OptionHolder"].Instance:GetDescendants()
-                TableInsert(Descendants, Items["OptionHolder"].Instance)
+                local Descendants = Items["Holder"].Instance:GetDescendants()
+                TableInsert(Descendants, Items["Holder"].Instance)
 
                 local NewTween
 
@@ -3069,10 +3076,15 @@ local Library do
                     end
                 end
 
-                Library:Connect(NewTween.Tween.Completed, function()
+                if NewTween and NewTween.Tween then
+                    Library:Connect(NewTween.Tween.Completed, function()
+                        Debounce = false
+                    Items["Holder"].Instance.Visible = Bool
+                    end)
+                else
                     Debounce = false
-                    Items["OptionHolder"].Instance.Visible = Bool
-                end)
+                    Items["Holder"].Instance.Visible = Bool
+                end
             end
 
             function Dropdown:SetVisibility(Bool)
@@ -3083,7 +3095,7 @@ local Library do
 
             Library:Connect(UserInputService.InputBegan, function(Input)
                 if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-                    if Library:IsMouseOverFrame(Items["OptionHolder"]) then
+                    if Library:IsMouseOverFrame(Items["Holder"]) then
                         return
                     end
 
@@ -3823,10 +3835,15 @@ local Library do
                         end
                     end
 
+                    if NewTween and NewTween.Tween then
                     Library:Connect(NewTween.Tween.Completed, function()
                         Debounce = false
                         DropdownItems["OptionHolder"].Instance.Visible = Bool
                     end)
+                else
+                    Debounce = false
+                        DropdownItems["OptionHolder"].Instance.Visible = Bool
+                end
                 end
 
                 function Dropdown:Set(Option)
@@ -3988,10 +4005,15 @@ local Library do
                     end
                 end
 
-                Library:Connect(NewTween.Tween.Completed, function()
+                if NewTween and NewTween.Tween then
+                    Library:Connect(NewTween.Tween.Completed, function()
+                        Debounce = false
+                    Items["ColorpickerWindow"].Instance.Visible = Bool
+                    end)
+                else
                     Debounce = false
                     Items["ColorpickerWindow"].Instance.Visible = Bool
-                end)
+                end
             end
 
             function Colorpicker:Get()
@@ -4715,10 +4737,15 @@ local Library do
                         end
                     end
 
+                    if NewTween and NewTween.Tween then
                     Library:Connect(NewTween.Tween.Completed, function()
                         Debounce = false
                         DropdownItems["OptionHolder"].Instance.Visible = Bool
                     end)
+                else
+                    Debounce = false
+                        DropdownItems["OptionHolder"].Instance.Visible = Bool
+                end
                 end
 
                 DropdownItems["RealDropdown"]:Connect("MouseButton1Down", function()
@@ -4964,10 +4991,15 @@ local Library do
                     end
                 end
 
-                Library:Connect(NewTween.Tween.Completed, function()
+                if NewTween and NewTween.Tween then
+                    Library:Connect(NewTween.Tween.Completed, function()
+                        Debounce = false
+                    Items["KeybindWindow"].Instance.Visible = Bool
+                    end)
+                else
                     Debounce = false
                     Items["KeybindWindow"].Instance.Visible = Bool
-                end)
+                end
             end
 
             function Keybind:SetMode(Mode)
@@ -6775,6 +6807,9 @@ local Library do
         Library.KeybindsList = function(self)
             local KeybindList = { }
             self.KeyList = KeybindList
+            KeybindList.Items = Items
+            self.KeybindFrame = Items["KeybindsList"].Instance
+            Items["KeybindsList"].Instance.Visible = false
 
             local Items = { } do
                 Items["KeybindsList"] = Instances:Create("Frame", {
@@ -7261,7 +7296,7 @@ local Library do
                     Name = "\0",
                     AnchorPoint = Vector2New(1, 0.5),
                     Size = UDim2New(0, 250, 0, 26),
-                    Position = UDim2New(1, -52, 0.5, 0),
+                    Position = UDim2New(1, -60, 0.5, 0),
                     BorderColor3 = FromRGB(0, 0, 0),
                     ZIndex = 2,
                     BorderSizePixel = 0,
@@ -7442,7 +7477,20 @@ local Library do
                     end
                 end
 
-                Library:Connect(NewTween.Tween.Completed, function()
+                if NewTween and NewTween.Tween then
+                    Library:Connect(NewTween.Tween.Completed, function()
+                        Debounce = false
+                    Items["MainFrame"].Instance.Visible = Bool
+
+                    if Window.IsOpen then
+                        Items["MouseImage"].Instance.Visible = true
+                        UserInputService.MouseIconEnabled = false
+                    else
+                        Items["MouseImage"].Instance.Visible = false
+                        UserInputService.MouseIconEnabled = true
+                    end
+                    end)
+                else
                     Debounce = false
                     Items["MainFrame"].Instance.Visible = Bool
 
@@ -7453,7 +7501,7 @@ local Library do
                         Items["MouseImage"].Instance.Visible = false
                         UserInputService.MouseIconEnabled = true
                     end
-                end)
+                end
             end
 
             function Window:SetText(Text)
@@ -7537,6 +7585,12 @@ local Library do
             Window.Items = Items
 
             Window:SetOpen(true)
+                        Library:KeybindsList()
+            if Library.KeyList and Library.KeyList.Items and Library.KeyList.Items["KeybindsList"] then
+                Library.KeybindFrame = Library.KeyList.Items["KeybindsList"].Instance
+                Library.KeybindFrame.Visible = false
+            end
+
             return setmetatable(Window, self)
         end
 
@@ -7822,9 +7876,13 @@ local Library do
                     end
                 end
 
-                Library:Connect(NewTween.Tween.Completed, function()
+                if NewTween and NewTween.Tween then
+                    Library:Connect(NewTween.Tween.Completed, function()
+                        Debounce = false
+                    end)
+                else
                     Debounce = false
-                end)
+                end
             end
 
             Items["Inactive"]:Connect("MouseButton1Down", function()
@@ -8028,9 +8086,13 @@ local Library do
                     end
                 end
 
-                Library:Connect(NewTween.Tween.Completed, function()
+                if NewTween and NewTween.Tween then
+                    Library:Connect(NewTween.Tween.Completed, function()
+                        Debounce = false
+                    end)
+                else
                     Debounce = false
-                end)
+                end
             end
 
             Items["Inactive"]:Connect("MouseButton1Down", function()
@@ -8557,10 +8619,15 @@ local Library do
                         end
                     end
 
+                    if NewTween and NewTween.Tween then
                     Library:Connect(NewTween.Tween.Completed, function()
                         Debounce = false
                         DropdownItems["OptionHolder"].Instance.Visible = Bool
                     end)
+                else
+                    Debounce = false
+                        DropdownItems["OptionHolder"].Instance.Visible = Bool
+                end
                 end
 
                 function Dropdown:Set(Option)
