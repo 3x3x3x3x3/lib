@@ -1982,6 +1982,14 @@ local Library do
         end
     end
 
+        Library.Toggle = function(self)
+        if self.WindowInstance and self.WindowInstance.SetOpen then
+            self.WindowInstance:SetOpen(not self.WindowInstance.IsOpen)
+        elseif self.CurrentWindow and self.CurrentWindow.SetOpen then
+            self.CurrentWindow:SetOpen(not self.CurrentWindow.IsOpen)
+        end
+    end
+
     Library.Font = CustomFont:Get("Inter")
     end
 
@@ -3147,8 +3155,8 @@ local Library do
                 IsOpen = false,
 
                 Color = FromRGB(0, 0, 0),
-                HexValue = "000000",
-                Alpha = 0,
+                HexValue = "FFFFFF",
+                Alpha = 1,
 
                 Name = Data.Name,
                 Type = "Colorpicker",
@@ -3984,6 +3992,7 @@ local Library do
                 Colorpicker.IsOpen = Bool
                 Debounce = true
 
+                Items["ColorpickerWindow"].Instance.ZIndex = Bool and 100 or 0
                 Items["ColorpickerWindow"].Instance.Visible = Bool
                 Items["ColorpickerWindow"].Instance.Parent = Bool and Library.Holder.Instance or Library.UnusedHolder.Instance
 
@@ -4108,7 +4117,7 @@ local Library do
                 end
 
                 Colorpicker.Hue, Colorpicker.Saturation, Colorpicker.Value = Color:ToHSV()
-                Colorpicker.Alpha = Alpha or 0
+                Colorpicker.Alpha = Alpha or 1
 
                 local ColorPositionX = MathClamp(1 - Colorpicker.Saturation, 0, 0.98)
                 local ColorPositionY = MathClamp(1 - Colorpicker.Value, 0, 0.97)
@@ -4550,12 +4559,10 @@ local Library do
                     function OptionData:Toggle(Status)
                         if Status == "Active" then
                             OptionData.Button:Tween(nil, {BackgroundTransparency = 0})
-                            OptionData.Text:Tween(nil, {TextTransparency = 0, Position = UDim2New(0, 27, 0.5, 0)})
-                            OptionData.Check:Tween(nil, {ImageTransparency = 0})
+                            OptionData.Text:Tween(nil, {TextTransparency = 0, Position = UDim2New(0, 10, 0.5, 0)})
                         elseif Status == "Inactive" then
                             OptionData.Button:Tween(nil, {BackgroundTransparency = 1})
-                            OptionData.Text:Tween(nil, {TextTransparency = 0.5, Position = UDim2New(0, 7, 0.5, 0)})
-                            OptionData.Check:Tween(nil, {ImageTransparency = 1})
+                            OptionData.Text:Tween(nil, {TextTransparency = 0.5, Position = UDim2New(0, 10, 0.5, 0)})
                         end
                     end
 
@@ -4668,14 +4675,14 @@ local Library do
                     end
                 end
 
-                local _1 = Dropdown:AddOption("toggle")
-                local _2 = Dropdown:AddOption("hold")
-                local _3 = Dropdown:AddOption("always")
+                local _1 = Dropdown:AddOption("Toggle")
+                local _2 = Dropdown:AddOption("Hold")
+                local _3 = Dropdown:AddOption("Always")
 
                 Modes = {
-                    ["toggle"] = _1,
-                    ["hold"] = _2,
-                    ["always"] = _3
+                    ["Toggle"] = _1, ["toggle"] = _1,
+                    ["Hold"] = _2,   ["hold"] = _2,
+                    ["Always"] = _3, ["always"] = _3
                 }
 
                 local Debounce = false
@@ -7593,6 +7600,8 @@ local Library do
             end)
 
             Window.Items = Items
+            self.WindowInstance = Window
+            self.CurrentWindow = Window
 
             Window:SetOpen(true)
                         Library:KeybindsList()
