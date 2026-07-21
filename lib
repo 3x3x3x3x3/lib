@@ -50,13 +50,11 @@ local Options, MiscOptions do
         {"LowerTorso", "RightUpperLeg"},
         {"LeftUpperLeg", "LeftLowerLeg"},
         {"RightUpperLeg", "RightLowerLeg"},
-    }
-
+    }
 
 
     MiscOptions = {
-        ["Enabled"] = false;
-
+        ["Enabled"] = false;
         ["Boxes"] = false;
         ["BoxType"] = "Corner";
         ["Box Gradient 1"] = { Color = rgb(170, 130, 255), Transparency = 0.9 };
@@ -80,8 +78,7 @@ local Options, MiscOptions do
         ["Healthbar_Tween"] = false;
         ["Healthbar_EasingStyle"] = "Circular";
         ["Healthbar_EasingDirection"] = "InOut";
-        ["Healthbar_Easing_Speed"] = 1;
-
+        ["Healthbar_Easing_Speed"] = 1;
         ["Name_Text"] = false;
         ["Name_Text_Color"] = { Color = rgb(255, 255, 255) };
         ["Name_Text_Position"] = "Top";
@@ -177,8 +174,7 @@ local Options, MiscOptions do
             local ScreenX = RelativePos.X / (HalfX * 2)
             local ScreenY = -RelativePos.Y / (HalfY * 2)
 
-            local OnScreen = -LocalPos.Z > 0 and ScreenX >= 0 and ScreenX <= 1 and ScreenY >= 0 and ScreenY <= 1
-
+            local OnScreen = -LocalPos.Z > 0 and ScreenX >= 0 and ScreenX <= 1 and ScreenY >= 0 and ScreenY <= 1
             return Vector3.new(ScreenX * ViewportSize.X, ScreenY * ViewportSize.Y, -LocalPos.Z), OnScreen
         end
 
@@ -232,8 +228,7 @@ local Options, MiscOptions do
                 Type = typechar or "player"
             }
 
-            local Items = Data.Items; do
-
+            local Items = Data.Items; do
                     Items.Holder = Esp:Create( "Frame" , {
                         Parent = Esp.ScreenGui;
                         Name = "\0";
@@ -251,9 +246,7 @@ local Options, MiscOptions do
                         Color = rgbseq{rgbkey(0, rgb(255, 255, 255)), rgbkey(1, rgb(255, 255, 255))};
                         Parent = Items.Holder;
                         Enabled = true
-                    });
-
-
+                    });
                         Items.Left = Esp:Create( "Frame" , {
                             Parent = Items.Holder;
                             Size = dim2(0, 0, 1, 0);
@@ -428,10 +421,7 @@ local Options, MiscOptions do
                             ZIndex = 0;
                             AutomaticSize = Enum.AutomaticSize.X;
                             BackgroundColor3 = rgb(255, 255, 255)
-                        });
-
-
-
+                        });
                     Items.Corners = Esp:Create( "Frame", {
                         Parent = Esp.Cache;
                         Name = "\0";
@@ -601,9 +591,7 @@ local Options, MiscOptions do
 
                     Esp:Create( "UIGradient", {
                         Parent = Items.TopLeftX
-                    });
-
-
+                    });
                     Items.Box = Esp:Create( "Frame" , {
                         Parent = Esp.Cache;
                         Name = "\0";
@@ -655,9 +643,7 @@ local Options, MiscOptions do
                     Esp:Create( "UIStroke" , {
                         Parent = Items.Inner2;
                         LineJoinMode = Enum.LineJoinMode.Miter
-                    });
-
-
+                    });
                     Items.Healthbar = Esp:Create( "Frame" , {
                         Name = "Left";
                         Parent = Esp.Cache;
@@ -701,9 +687,7 @@ local Options, MiscOptions do
                     Esp:Create( "UIStroke", {
                         Parent = Items.HealthbarText;
                         LineJoinMode = Enum.LineJoinMode.Miter
-                    });
-
-
+                    });
                     Items.Text = Esp:Create( "TextLabel", {
                         FontFace = Fonts.ProggyClean;
                         TextColor3 = rgb(255, 255, 255);
@@ -741,8 +725,7 @@ local Options, MiscOptions do
                     Esp:Create( "UIStroke", {
                         Parent = Items.Distance;
                         LineJoinMode = Enum.LineJoinMode.Miter
-                    });
-
+                    });
             end
 
             Data.ToolAdded = function(item)
@@ -755,8 +738,7 @@ local Options, MiscOptions do
 
                 pcall(function()
                     Items["weapon"].Parent = exists and Items["Holder"] or Esp.Cache
-                end)
-
+                end)
             end
 
             Data.HealthChanged = function(Value)
@@ -848,8 +830,7 @@ local Options, MiscOptions do
 
             Data.RefreshDescendants()
             Esp:Connection(Data.Info.Character.ChildAdded, Data.ToolAdded)
-            Esp:Connection(player.CharacterAdded, Data.RefreshDescendants)
-
+            Esp:Connection(player.CharacterAdded, Data.RefreshDescendants)
             for _,ItemParentor in {Items.Left, Items.Right, Items.Top, Items.Bottom} do
                 Esp:Connection(ItemParentor.ChildAdded, function()
                     task.wait(.1)
@@ -964,20 +945,13 @@ local Options, MiscOptions do
                 local Text = tostring( math.round(Distance) )  .. "m"
                 if DistanceLabel.Text ~= Text then
                     DistanceLabel.Text = Text
-                end 
-
-
-
-
-
-
+                end 
             end
         end
 
         function Esp.RefreshElements(key, value)
             for _,Data in Esp.Players do
-                local Items = Data and Data.Items 
-
+                local Items = Data and Data.Items 
                 if not Items then
                     continue
                 end
@@ -992,8 +966,7 @@ local Options, MiscOptions do
 
                 if key == "Enabled" then
                     Items.Holder.Visible = value
-                end 
-
+                end 
                     if key == "BoxType" then
                         if not (Items.Box.Parent == Items.Holder or Items.Corners.Parent == Items.Holder) then
                             continue
@@ -1077,9 +1050,7 @@ local Options, MiscOptions do
 
                     if key == "Box Fill Rotation" then
                         Items.HolderGradient.Rotation = value
-                    end 
-
-
+                    end 
                     if key == "Healthbar" then
                         if Items.Healthbar.Parent == nil then
                             continue
@@ -1162,9 +1133,7 @@ local Options, MiscOptions do
 
                     if key == "Healthbar_Font" then
                         Items.HealthbarText.FontFace = Fonts[value]
-                    end
-
-
+                    end
                     local Text;
                     local Match;
                     if string.match(key, "Name") then
@@ -1214,8 +1183,7 @@ local Options, MiscOptions do
                         if key == Match .. "_Text_Size" then
                             Text.TextSize = value
                         end
-                    end 
-
+                    end 
             end
         end;
 
@@ -1267,10 +1235,8 @@ local Options, MiscOptions do
     for index,value in MiscOptions do
         Options[index] = value
     end
-end
-
-local Library do
-
+end
+local Library do
     local Players = game:GetService("Players")
     local UserInputService = game:GetService("UserInputService")
     local HttpService = game:GetService("HttpService")
@@ -1278,12 +1244,10 @@ local Library do
     local RunService = game:GetService("RunService")
     local Workspace = game:GetService("Workspace")
     local SoundService = cloneref and cloneref(game:GetService("SoundService")) or game:GetService("SoundService")
-    local CoreGui = cloneref and cloneref(game:GetService("CoreGui")) or game:GetService("CoreGui")
-
+    local CoreGui = cloneref and cloneref(game:GetService("CoreGui")) or game:GetService("CoreGui")
     local LocalPlayer = Players.LocalPlayer
     local Camera = Workspace.CurrentCamera
-    local Mouse = LocalPlayer:GetMouse()
-
+    local Mouse = LocalPlayer:GetMouse()
     local FromRGB = Color3.fromRGB
     local FromHSV = Color3.fromHSV
     local FromHex = Color3.fromHex
@@ -1333,8 +1297,7 @@ local Library do
         return CoreGui
     end
 
-    getgenv().Options = { }
-
+    getgenv().Options = { }
     Library = {
         Theme = nil,
 
@@ -1359,8 +1322,7 @@ local Library do
             ["Value"] = { "Value.png", "https://github.com/sametexe001/images/blob/main/value.png?raw=true" },
             ["Hue"] = { "Hue.png", "https://github.com/sametexe001/images/blob/main/horizontalhue.png?raw=true" },
             ["Checkers"] = { "Checkers.png", "https://github.com/sametexe001/images/blob/main/checkers.png?raw=true" },
-        },
-
+        },
         Pages = { },
         Sections = { },
 
@@ -2130,8 +2092,7 @@ local Library do
         local Arguements = { ... }
         local Success, Result = pcall(Function, TableUnpack(Arguements))
 
-        if not Success then
-
+        if not Success then
 
             return false
         end
@@ -2906,8 +2867,7 @@ local Library do
                 if Dropdown.Options[Option] then
                     DoesItAlreadyExists = true
                     local NewName = Option .. " " .. ChildrenCount
-                    OptionData.Name = NewName
-
+                    OptionData.Name = NewName
                 end
 
                 function OptionData:Toggle(Status)
@@ -5280,8 +5240,7 @@ local Library do
                     Size = UDim2New(1, -16, 1, -53),
                     BorderSizePixel = 0,
                     BackgroundColor3 = FromRGB(255, 255, 255)
-                })
-
+                })
                     Items.Box = Instances:Create( "Frame" , {
                         BackgroundTransparency = 1;
                         Parent = Items.CharacterViewport.Instance;
@@ -5511,8 +5470,7 @@ local Library do
                         Instances:Create( "UIStroke" , {
                             Parent = Items.Inner2.Instance;
                             LineJoinMode = Enum.LineJoinMode.Miter
-                        });
-
+                        });
                     Items.HealthBar = Instances:Create( "Frame" , {
                         Name = "\0";
                         Parent = Items.Left.Instance;
@@ -5553,8 +5511,7 @@ local Library do
                         BorderColor3 = FromRGB(0, 0, 0);
                         ZIndex = 2;
                         TextSize = 12;
-                    })
-
+                    })
                         Items.Name = Instances:Create( "TextLabel" , {
                             FontFace = ESPFonts["ProggyClean"];
                             Parent = Items.TopTexts.Instance;
@@ -5605,8 +5562,7 @@ local Library do
                             BorderColor3 = FromRGB(0, 0, 0);
                             ZIndex = 2;
                             TextSize = 12;
-                        });
-
+                        });
                         Items.Corners = Instances:Create( "Frame" , {
                             Parent = Items.Box.Instance;
                             Name = "\0";
@@ -7602,8 +7558,7 @@ local Library do
                     Parent = Items["Inactive"].Instance,
                     Name = "\0",
                     CornerRadius = UDimNew(1, 0)
-                })
-
+                })
                 local _resolvedImage = ""
                 local _hasIcon = false
                 local _lucideData = nil
@@ -8744,8 +8699,7 @@ local Library do
                         Items["PlayerUsername"].Instance.Text = Playerlist.Player.DisplayName .. " (@" .. Playerlist.Player.Name .. ")"
                         Items["PlayerUserID"].Instance.Text = tostring(Playerlist.Player.UserId)
                         Items["PlayerAccountAge"].Instance.Text = tostring(Playerlist.Player.AccountAge) .. " days old"
-                    else
-
+                    else
                         Playerlist.Player = nil
                         PlayerData:Toggle("Inactive")
                         Items["PlayerAvatar"].Instance.Image = "rbxassetid://98200387761744"
