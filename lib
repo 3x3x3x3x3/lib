@@ -1654,7 +1654,7 @@ local Library do
         end
 
         Instances.AddToTheme = function(self, Properties)
-            if not self.Instance then
+            if not self.Instance or not Library.AddToTheme then
                 return
             end
 
@@ -1662,7 +1662,7 @@ local Library do
         end
 
         Instances.ChangeItemTheme = function(self, Properties)
-            if not self.Instance then
+            if not self.Instance or not Library.ChangeItemTheme then
                 return
             end
 
@@ -3035,10 +3035,12 @@ local Library do
                         end
                     end
 
-                    Library.OpenFrames[Data.Name] = Dropdown
+                    local _ddKey = Data.Flag or Data.Name or "Dropdown"
+                    Library.OpenFrames[_ddKey] = Dropdown
                 else
-                    if Library.OpenFrames[Data.Name] then
-                        Library.OpenFrames[Data.Name] = nil
+                    local _ddKey = Data.Flag or Data.Name or "Dropdown"
+                    if Library.OpenFrames[_ddKey] then
+                        Library.OpenFrames[_ddKey] = nil
                     end
 
                     if RenderStepped then
@@ -3994,10 +3996,12 @@ local Library do
                         end
                     end
 
-                    Library.OpenFrames[Data.Name] = Colorpicker
+                    local _cpKey = Data.Flag or Data.Name or "Colorpicker"
+                    Library.OpenFrames[_cpKey] = Colorpicker
                 else
-                    if Library.OpenFrames[Data.Name] then
-                        Library.OpenFrames[Data.Name] = nil
+                    local _cpKey = Data.Flag or Data.Name or "Colorpicker"
+                    if Library.OpenFrames[_cpKey] then
+                        Library.OpenFrames[_cpKey] = nil
                     end
                 end
 
@@ -4946,12 +4950,14 @@ local Library do
                         end
                     end
 
-                    Library.OpenFrames[Data.Name] = Keybind
+                    local _kbKey = Data.Flag or Data.Name or "Keybind"
+                    Library.OpenFrames[_kbKey] = Keybind
                 else
                     ModesDropdown:SetOpen(false)
 
-                    if Library.OpenFrames[Data.Name] then
-                        Library.OpenFrames[Data.Name] = nil
+                    local _kbKey = Data.Flag or Data.Name or "Keybind"
+                    if Library.OpenFrames[_kbKey] then
+                        Library.OpenFrames[_kbKey] = nil
                     end
                 end
 
