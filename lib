@@ -6807,10 +6807,6 @@ local Library do
         Library.KeybindsList = function(self)
             local KeybindList = { }
             self.KeyList = KeybindList
-            KeybindList.Items = Items
-            self.KeybindFrame = Items["KeybindsList"].Instance
-            Items["KeybindsList"].Instance.Visible = false
-
             local Items = { } do
                 Items["KeybindsList"] = Instances:Create("Frame", {
                     Parent = Library.Holder.Instance,
@@ -6897,6 +6893,10 @@ local Library do
                     SortOrder = Enum.SortOrder.LayoutOrder
                 })
             end
+
+            KeybindList.Items = Items
+            self.KeybindFrame = Items["KeybindsList"].Instance
+            Items["KeybindsList"].Instance.Visible = false
 
             function KeybindList:Add(Key, Name)
                 local NewKey = Instances:Create("TextLabel", {
