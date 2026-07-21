@@ -2862,23 +2862,7 @@ local Library do
                     BackgroundColor3 = FromRGB(16, 18, 21)
                 })  OptionButton:AddToTheme({BackgroundColor3 = "Background"})
 
-                local CheckImage = Instances:Create("ImageLabel", {
-                    Parent = OptionButton.Instance,
-                    Name = "\0",
-                    ImageColor3 = FromRGB(170, 130, 255),
-                    ScaleType = Enum.ScaleType.Fit,
-                    BorderColor3 = FromRGB(0, 0, 0),
-                    Size = UDim2New(0, 18, 0, 18),
-                    Visible = true,
-                    AnchorPoint = Vector2New(0, 0.5),
-                    Image = "rbxassetid://116339777575852",
-                    BackgroundTransparency = 1,
-                    Position = UDim2New(0, 3, 0.5, 0),
-                    ImageTransparency = 1,
-                    ZIndex = 5,
-                    BorderSizePixel = 0,
-                    BackgroundColor3 = FromRGB(255, 255, 255)
-                })  CheckImage:AddToTheme({ImageColor3 = "Accent"})
+                -- Removed icon on dropdown option per user request
 
                 Instances:Create("UICorner", {
                     Parent = OptionButton.Instance,
@@ -2911,8 +2895,7 @@ local Library do
                     Name = Option,
                     Text = OptionText,
                     RealName = Option,
-                    Button = OptionButton,
-                    Check = CheckImage
+                    Button = OptionButton
                 }
 
                 local DoesItAlreadyExists
@@ -3036,8 +3019,13 @@ local Library do
 
                     RenderStepped = RunService.RenderStepped:Connect(function()
                         Items["Holder"].Instance.Position = UDim2New(0, Items["RealDropdown"].Instance.AbsolutePosition.X, 0, Items["RealDropdown"].Instance.AbsolutePosition.Y + 30)
-                        local _targetHeight = (Data.MaxSize and Data.MaxSize <= 15) and (Data.MaxSize * 28 + 8) or (Data.MaxSize or 165)
-                        Items["Holder"].Instance.Size = UDim2New(0, Items["RealDropdown"].Instance.AbsoluteSize.X, 0, _targetHeight)
+                        local _optCount = 0
+                        for _ in pairs(Dropdown.Options) do _optCount = _optCount + 1 end
+                        if _optCount == 0 then _optCount = 1 end
+                        local _maxLimit = (Data.MaxSize and Data.MaxSize <= 15) and Data.MaxSize or 6
+                        local _actualCount = math.min(_optCount, _maxLimit)
+                        local _calculatedHeight = _actualCount * 25 + 8
+                        Items["Holder"].Instance.Size = UDim2New(0, Items["RealDropdown"].Instance.AbsoluteSize.X, 0, _calculatedHeight)
                     end)
 
                     for Index, Value in Library.OpenFrames do
@@ -3746,12 +3734,10 @@ local Library do
                     function OptionData:Toggle(Status)
                         if Status == "Active" then
                             OptionData.Button:Tween(nil, {BackgroundTransparency = 0})
-                            OptionData.Text:Tween(nil, {TextTransparency = 0, Position = UDim2New(0, 27, 0.5, 0)})
-                            OptionData.Check:Tween(nil, {ImageTransparency = 0})
+                            OptionData.Text:Tween(nil, {TextTransparency = 0, Position = UDim2New(0, 10, 0.5, 0)})
                         elseif Status == "Inactive" then
                             OptionData.Button:Tween(nil, {BackgroundTransparency = 1})
-                            OptionData.Text:Tween(nil, {TextTransparency = 0.5, Position = UDim2New(0, 7, 0.5, 0)})
-                            OptionData.Check:Tween(nil, {ImageTransparency = 1})
+                            OptionData.Text:Tween(nil, {TextTransparency = 0.5, Position = UDim2New(0, 10, 0.5, 0)})
                         end
                     end
 
@@ -3992,17 +3978,17 @@ local Library do
                 end
 
                 Colorpicker.IsOpen = Bool
-
                 Debounce = true
+
+                Items["ColorpickerWindow"].Instance.Visible = Bool
                 Items["ColorpickerWindow"].Instance.Parent = Bool and Library.Holder.Instance or Library.UnusedHolder.Instance
 
                 if Bool then
-                    Items["ColorpickerWindow"].Instance.Visible = true
                     Items["ColorpickerWindow"].Instance.Position = UDim2New(0, Items["ColorpickerButton"].Instance.AbsolutePosition.X, 0, Items["ColorpickerButton"].Instance.AbsolutePosition.Y + 25)
 
                     for Index, Value in Library.OpenFrames do
-                        if Value.Type == "Colorpicker" then
-                            Value:SetOpen(false)
+                        if Value ~= Colorpicker and Value.SetOpen then
+                            pcall(function() Value:SetOpen(false) end)
                         end
                     end
 
@@ -4013,36 +3999,9 @@ local Library do
                     end
                 end
 
-                local Descendants = Items["ColorpickerWindow"].Instance:GetDescendants()
-                TableInsert(Descendants, Items["ColorpickerWindow"].Instance)
-
-                local NewTween
-
-                for Index, Value in Descendants do
-                    local TransparencyProperty = Tween:GetProperty(Value)
-
-                    if not TransparencyProperty then
-                        continue
-                    end
-
-                    if type(TransparencyProperty) == "table" then
-                        for _, Property in TransparencyProperty do
-                            NewTween = Tween:FadeItem(Value, Property, Bool, Data.Window.FadeSpeed)
-                        end
-                    else
-                        NewTween = Tween:FadeItem(Value, TransparencyProperty, Bool, Data.Window.FadeSpeed)
-                    end
-                end
-
-                if NewTween and NewTween.Tween then
-                    Library:Connect(NewTween.Tween.Completed, function()
-                        Debounce = false
-                    Items["ColorpickerWindow"].Instance.Visible = Bool
-                    end)
-                else
+                task.delay(0.1, function()
                     Debounce = false
-                    Items["ColorpickerWindow"].Instance.Visible = Bool
-                end
+                end)
             end
 
             function Colorpicker:Get()
@@ -7158,17 +7117,20 @@ local Library do
                     return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Library.Theme["Dark Gradient"])}
                 end})
 
+                local _hasLogo = Window.Logo and Window.Logo ~= 0 and tostring(Window.Logo) ~= "0" and Window.Logo ~= ""
+
                 Items["Logo"] = Instances:Create("ImageLabel", {
                     Parent = Items["Topbar"].Instance,
                     Name = "\0",
                     ImageColor3 = FromRGB(170, 130, 255),
                     ScaleType = Enum.ScaleType.Fit,
                     BorderColor3 = FromRGB(0, 0, 0),
-                    Size = UDim2New(0, 22, 0, 22),
+                    Size = _hasLogo and UDim2New(0, 22, 0, 22) or UDim2New(0, 0, 0, 0),
                     AnchorPoint = Vector2New(0, 0.5),
-                    Image = "rbxassetid://"..Window.Logo,
+                    Image = _hasLogo and ("rbxassetid://"..Window.Logo) or "",
                     BackgroundTransparency = 1,
                     Position = UDim2New(0, 7, 0.5, 0),
+                    Visible = _hasLogo,
                     ZIndex = 2,
                     BorderSizePixel = 0,
                     BackgroundColor3 = FromRGB(255, 255, 255)
@@ -7188,7 +7150,7 @@ local Library do
                     Text = Window.Name,
                     BackgroundTransparency = 1,
                     TextXAlignment = Enum.TextXAlignment.Left,
-                    Position = UDim2New(0, 37, 0.5, 0),
+                    Position = _hasLogo and UDim2New(0, 37, 0.5, 0) or UDim2New(0, 12, 0.5, 0),
                     BorderSizePixel = 0,
                     AutomaticSize = Enum.AutomaticSize.X,
                     BackgroundColor3 = FromRGB(255, 255, 255)
@@ -7325,7 +7287,7 @@ local Library do
                     Name = "\0",
                     AnchorPoint = Vector2New(1, 0.5),
                     Size = UDim2New(0, 250, 0, 26),
-                    Position = UDim2New(1, -60, 0.5, 0),
+                    Position = UDim2New(1, -48, 0.5, 0),
                     BorderColor3 = FromRGB(0, 0, 0),
                     ZIndex = 2,
                     BorderSizePixel = 0,
@@ -7384,7 +7346,7 @@ local Library do
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = "",
                     ZIndex = 2,
-                    Position = UDim2New(0, 35, 0.5, -2),
+                    Position = UDim2New(0, 32, 0.5, 0),
                     BackgroundTransparency = 1,
                     TextXAlignment = Enum.TextXAlignment.Left,
                     TextColor3 = FromRGB(255, 255, 255),
@@ -7671,8 +7633,8 @@ local Library do
                     Name = "\0",
                     BorderColor3 = FromRGB(0, 0, 0),
                     BackgroundTransparency = 1,
-                    Position = UDim2New(0, 7, 0, 48),
-                    Size = UDim2New(1, -14, 1, -55),
+                    Position = Page.SubPages and UDim2New(0, 7, 0, 48) or UDim2New(0, 7, 0, 10),
+                    Size = Page.SubPages and UDim2New(1, -14, 1, -55) or UDim2New(1, -14, 1, -15),
                     ZIndex = 2,
                     BorderSizePixel = 0,
                     BackgroundColor3 = FromRGB(255, 255, 255)
