@@ -1974,7 +1974,15 @@ local Library do
             Url = "https://github.com/sametexe001/luas/raw/refs/heads/main/fonts/InterSemibold.ttf"
         })
 
-        Library.Font = CustomFont:Get("Inter")
+            Library.UseCustomCursor = true
+    Library.SetCustomCursor = function(self, Bool)
+        self.UseCustomCursor = Bool
+        if not Bool then
+            UserInputService.MouseIconEnabled = true
+        end
+    end
+
+    Library.Font = CustomFont:Get("Inter")
     end
 
     local Themes = {
@@ -3028,7 +3036,8 @@ local Library do
 
                     RenderStepped = RunService.RenderStepped:Connect(function()
                         Items["Holder"].Instance.Position = UDim2New(0, Items["RealDropdown"].Instance.AbsolutePosition.X, 0, Items["RealDropdown"].Instance.AbsolutePosition.Y + 30)
-                        Items["Holder"].Instance.Size = UDim2New(0, Items["RealDropdown"].Instance.AbsoluteSize.X, 0, Data.MaxSize or 165)
+                        local _targetHeight = (Data.MaxSize and Data.MaxSize <= 15) and (Data.MaxSize * 28 + 8) or (Data.MaxSize or 165)
+                        Items["Holder"].Instance.Size = UDim2New(0, Items["RealDropdown"].Instance.AbsoluteSize.X, 0, _targetHeight)
                     end)
 
                     for Index, Value in Library.OpenFrames do
@@ -3246,6 +3255,26 @@ local Library do
 
                 Items["ColorpickerWindow"]:MakeDraggable()
                 Items["ColorpickerWindow"]:MakeResizeable(Vector2New(219, 282), Vector2New(9999, 9999))
+
+                Items["CloseButton"] = Instances:Create("ImageButton", {
+                    Parent = Items["ColorpickerWindow"].Instance,
+                    Name = "\0",
+                    ScaleType = Enum.ScaleType.Fit,
+                    BorderColor3 = FromRGB(0, 0, 0),
+                    Size = UDim2New(0, 14, 0, 14),
+                    AutoButtonColor = false,
+                    AnchorPoint = Vector2New(1, 0),
+                    Image = "rbxassetid://76001605964586",
+                    BackgroundTransparency = 1,
+                    Position = UDim2New(1, -6, 0, 6),
+                    ZIndex = 10,
+                    BorderSizePixel = 0,
+                    BackgroundColor3 = FromRGB(255, 255, 255)
+                })  Items["CloseButton"]:AddToTheme({ImageColor3 = "Image"})
+
+                Items["CloseButton"]:Connect("MouseButton1Down", function()
+                    Colorpicker:SetOpen(false)
+                end)
 
                 Instances:Create("UIStroke", {
                     Parent = Items["ColorpickerWindow"].Instance,
@@ -4223,7 +4252,7 @@ local Library do
                         return
                     end
 
-                    if Library:IsMouseOverFrame(Items["ColorpickerWindow"]) or Library:IsMouseOverFrame(AnimationsDropdownItems["OptionHolder"]) then
+                    if Library:IsMouseOverFrame(Items["ColorpickerWindow"]) or (AnimationsDropdownItems and AnimationsDropdownItems["OptionHolder"] and Library:IsMouseOverFrame(AnimationsDropdownItems["OptionHolder"])) then
                         return
                     end
 
@@ -5045,13 +5074,9 @@ local Library do
                     local RealKey = Key.Key == "Backspace" and "None" or Key.Key
                     Keybind.Key = tostring(Key.Key)
 
-                    if Key.Mode then
-                        Keybind.Mode = Key.Mode
-                        Keybind:SetMode(Key.Mode)
-                    else
-                        Keybind.Mode = "toggle"
-                        Keybind:SetMode("toggle")
-                    end
+                    local _setMode = Key.Mode and StringLower(tostring(Key.Mode)) or "toggle"
+                    Keybind.Mode = _setMode
+                    Keybind:SetMode(_setMode)
 
                     local KeyString = Keys[Keybind.Key] or StringGSub(tostring(RealKey), "Enum.", "") or RealKey
                     local TextToDisplay = KeyString and StringGSub(StringGSub(KeyString, "KeyCode.", ""), "UserInputType.", "") or "None"
@@ -5161,10 +5186,12 @@ local Library do
                 Keybind:SetOpen(not Keybind.IsOpen)
             end)
 
+            local _initMode = Data.Mode and StringLower(tostring(Data.Mode)) or "toggle"
+            Keybind.Mode = _initMode
+            ModesDropdown:Set(_initMode)
+
             if Data.Default then
-               Keybind.Mode = Data.Mode or "toggle"
-               ModesDropdown:Set(Keybind.Mode)
-               Keybind:Set({Key = Data.Default, Mode = Data.Mode})
+               Keybind:Set({Key = Data.Default, Mode = _initMode})
             end
 
             Library.SetFlags[Data.Flag] = function(Value)
@@ -6801,6 +6828,8 @@ local Library do
                 Items["Text"].Instance.Text = Text
             end
 
+            self.WatermarkFrame = Items["Watermark"].Instance
+            self.WatermarkObj = Watermark
             return Watermark
         end
 
@@ -7483,8 +7512,13 @@ local Library do
                     Items["MainFrame"].Instance.Visible = Bool
 
                     if Window.IsOpen then
-                        Items["MouseImage"].Instance.Visible = true
-                        UserInputService.MouseIconEnabled = false
+                        if Library.UseCustomCursor then
+                            Items["MouseImage"].Instance.Visible = true
+                            UserInputService.MouseIconEnabled = false
+                        else
+                            Items["MouseImage"].Instance.Visible = false
+                            UserInputService.MouseIconEnabled = true
+                        end
                     else
                         Items["MouseImage"].Instance.Visible = false
                         UserInputService.MouseIconEnabled = true
@@ -7495,8 +7529,13 @@ local Library do
                     Items["MainFrame"].Instance.Visible = Bool
 
                     if Window.IsOpen then
-                        Items["MouseImage"].Instance.Visible = true
-                        UserInputService.MouseIconEnabled = false
+                        if Library.UseCustomCursor then
+                            Items["MouseImage"].Instance.Visible = true
+                            UserInputService.MouseIconEnabled = false
+                        else
+                            Items["MouseImage"].Instance.Visible = false
+                            UserInputService.MouseIconEnabled = true
+                        end
                     else
                         Items["MouseImage"].Instance.Visible = false
                         UserInputService.MouseIconEnabled = true
