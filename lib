@@ -2896,7 +2896,7 @@ local Library do
                     BackgroundTransparency = 1,
                     TextXAlignment = Enum.TextXAlignment.Left,
                     AutomaticSize = Enum.AutomaticSize.X,
-                    Position = UDim2New(0, 7, 0.5, 0),
+                    Position = UDim2New(0, 10, 0.5, 0),
                     BorderSizePixel = 0,
                     BackgroundColor3 = FromRGB(255, 255, 255)
                 })  OptionText:AddToTheme({TextColor3 = "Text"})
@@ -2928,17 +2928,18 @@ local Library do
 
                 function OptionData:Toggle(Status)
                     if Status == "Active" then
-                        OptionData.Button:Tween(nil, {BackgroundTransparency = 0})
-                        OptionData.Text:Tween(nil, {TextTransparency = 0, Position = UDim2New(0, 27, 0.5, 0)})
-                        OptionData.Check:Tween(nil, {ImageTransparency = 0})
+                        OptionData.Button:Tween(nil, {BackgroundTransparency = 1})
+                        OptionData.Text:Tween(nil, {TextTransparency = 0, Position = UDim2New(0, 10, 0.5, 0)})
+                        -- Removed check tween
                     elseif Status == "Inactive" then
                         OptionData.Button:Tween(nil, {BackgroundTransparency = 1})
-                        OptionData.Text:Tween(nil, {TextTransparency = 0.5, Position = UDim2New(0, 7, 0.5, 0)})
-                        OptionData.Check:Tween(nil, {ImageTransparency = 1})
+                        OptionData.Text:Tween(nil, {TextTransparency = 0.5, Position = UDim2New(0, 10, 0.5, 0)})
+                        -- Removed check tween
                     end
                 end
 
                 function OptionData:Set()
+                    if not Data.Multi and OptionData.Selected then return end
                     OptionData.Selected = not OptionData.Selected
 
                     if Data.Multi then
@@ -3732,7 +3733,7 @@ local Library do
                         BackgroundTransparency = 1,
                         TextXAlignment = Enum.TextXAlignment.Left,
                         AutomaticSize = Enum.AutomaticSize.X,
-                        Position = UDim2New(0, 7, 0.5, 0),
+                        Position = UDim2New(0, 10, 0.5, 0),
                         BorderSizePixel = 0,
                         BackgroundColor3 = FromRGB(255, 255, 255)
                     })  OptionText:AddToTheme({TextColor3 = "Text"})
@@ -3747,7 +3748,7 @@ local Library do
 
                     function OptionData:Toggle(Status)
                         if Status == "Active" then
-                            OptionData.Button:Tween(nil, {BackgroundTransparency = 0})
+                            OptionData.Button:Tween(nil, {BackgroundTransparency = 1})
                             OptionData.Text:Tween(nil, {TextTransparency = 0, Position = UDim2New(0, 10, 0.5, 0)})
                         elseif Status == "Inactive" then
                             OptionData.Button:Tween(nil, {BackgroundTransparency = 1})
@@ -3756,6 +3757,7 @@ local Library do
                     end
 
                     function OptionData:Set()
+                        if not Dropdown.Multi and OptionData.Selected then return end
                         OptionData.Selected = not OptionData.Selected
 
                         if Dropdown.Multi then
@@ -4545,7 +4547,7 @@ local Library do
                         BackgroundTransparency = 1,
                         TextXAlignment = Enum.TextXAlignment.Left,
                         AutomaticSize = Enum.AutomaticSize.X,
-                        Position = UDim2New(0, 7, 0.5, 0),
+                        Position = UDim2New(0, 10, 0.5, 0),
                         BorderSizePixel = 0,
                         BackgroundColor3 = FromRGB(255, 255, 255)
                     })  OptionText:AddToTheme({TextColor3 = "Text"})
@@ -4560,7 +4562,7 @@ local Library do
 
                     function OptionData:Toggle(Status)
                         if Status == "Active" then
-                            OptionData.Button:Tween(nil, {BackgroundTransparency = 0})
+                            OptionData.Button:Tween(nil, {BackgroundTransparency = 1})
                             OptionData.Text:Tween(nil, {TextTransparency = 0, Position = UDim2New(0, 10, 0.5, 0)})
                         elseif Status == "Inactive" then
                             OptionData.Button:Tween(nil, {BackgroundTransparency = 1})
@@ -6732,14 +6734,14 @@ local Library do
 
             local Items = { } do
                 Items["Watermark"] = Instances:Create("Frame", {
-                    Parent = Library.Holder.Instance,
+                    Parent = Library.ScreenGui,
                     Name = "\0",
                     BorderColor3 = FromRGB(0, 0, 0),
                     AnchorPoint = Vector2New(0.5, 0),
                     Position = UDim2New(0.5, 0, 0, 15),
                     Size = UDim2New(0, 100, 0, 35),
                     BorderSizePixel = 0,
-                    ZIndex = 500,
+                    ZIndex = 99999,
                     Visible = true,
                     AutomaticSize = Enum.AutomaticSize.X,
                     BackgroundColor3 = FromRGB(16, 18, 21)
@@ -6773,8 +6775,8 @@ local Library do
                     Image = _hasLogo and ("rbxassetid://"..tostring(Logo)) or "",
                     Visible = _hasLogo,
                     BackgroundTransparency = 1,
-                    Position = UDim2New(0, 7, 0.5, 0),
-                    ZIndex = 501,
+                    Position = UDim2New(0, 10, 0.5, 0),
+                    ZIndex = 99999,
                     BorderSizePixel = 0,
                     BackgroundColor3 = FromRGB(255, 255, 255)
                 })  Items["Logo"]:AddToTheme({ImageColor3 = "Accent"})
@@ -6792,7 +6794,7 @@ local Library do
                     Position = _hasLogo and UDim2New(0, 35, 0.5, 0) or UDim2New(0, 10, 0.5, 0),
                     BorderSizePixel = 0,
                     AutomaticSize = Enum.AutomaticSize.X,
-                    ZIndex = 501,
+                    ZIndex = 99999,
                     TextSize = 14,
                     BackgroundColor3 = FromRGB(255, 255, 255)
                 })  Items["Text"]:AddToTheme({TextColor3 = "Text"})
@@ -7155,7 +7157,7 @@ local Library do
                     AnchorPoint = Vector2New(0, 0.5),
                     Image = _hasLogo and ("rbxassetid://"..Window.Logo) or "",
                     BackgroundTransparency = 1,
-                    Position = UDim2New(0, 7, 0.5, 0),
+                    Position = UDim2New(0, 10, 0.5, 0),
                     Visible = _hasLogo,
                     ZIndex = 2,
                     BorderSizePixel = 0,
@@ -8519,7 +8521,7 @@ local Library do
                         BackgroundTransparency = 1,
                         TextXAlignment = Enum.TextXAlignment.Left,
                         AutomaticSize = Enum.AutomaticSize.X,
-                        Position = UDim2New(0, 7, 0.5, 0),
+                        Position = UDim2New(0, 10, 0.5, 0),
                         BorderSizePixel = 0,
                         BackgroundColor3 = FromRGB(255, 255, 255)
                     })  OptionText:AddToTheme({TextColor3 = "Text"})
@@ -8534,13 +8536,13 @@ local Library do
 
                     function OptionData:Toggle(Status)
                         if Status == "Active" then
-                            OptionData.Button:Tween(nil, {BackgroundTransparency = 0})
-                            OptionData.Text:Tween(nil, {TextTransparency = 0, Position = UDim2New(0, 27, 0.5, 0)})
-                            OptionData.Check:Tween(nil, {ImageTransparency = 0})
+                            OptionData.Button:Tween(nil, {BackgroundTransparency = 1})
+                            OptionData.Text:Tween(nil, {TextTransparency = 0, Position = UDim2New(0, 10, 0.5, 0)})
+                            -- Removed check tween
                         elseif Status == "Inactive" then
                             OptionData.Button:Tween(nil, {BackgroundTransparency = 1})
-                            OptionData.Text:Tween(nil, {TextTransparency = 0.5, Position = UDim2New(0, 7, 0.5, 0)})
-                            OptionData.Check:Tween(nil, {ImageTransparency = 1})
+                            OptionData.Text:Tween(nil, {TextTransparency = 0.5, Position = UDim2New(0, 10, 0.5, 0)})
+                            -- Removed check tween
                         end
                     end
 
