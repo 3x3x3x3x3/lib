@@ -20368,7 +20368,7 @@ local SaveManager = {} do
 			writefile(self.Folder .. "/settings/autoload.txt", name)
 			AutoloadButton:SetDesc("Current autoload config: " .. name)
 			self.Library:Notify({
-				Title = "Interface"
+				Title = "Interface",
 				Content = "Config loader",
 				SubContent = string.format("Set %q to auto load", name),
 				Duration = 7
