@@ -1,5 +1,4 @@
 getgenv().LucideModule = (function()
- (function()
     local icons = {
 	{
 		"a-arrow-down",
