@@ -10324,7 +10324,7 @@ getgenv().LucideModule = (function()
     end
 
     return lucideRoblox
-end)()
+end)();
 
 
 
