@@ -17789,7 +17789,7 @@ local Library do
                 Window = self,
 
                 Name = Data.Name or Data.name or "combat",
-                Icon = Data.Icon or Data.icon or "111178525804834",
+                Icon = Data.Icon or Data.icon or "",
                 Columns = Data.Columns or Data.columns or 2,
                 SubPages = Data.SubPages or Data.subpages or false,
 
@@ -17859,20 +17859,44 @@ local Library do
                     CornerRadius = UDimNew(1, 0)
                 })
 
+                -- Resolve icon: numeric asset id or Lucide name
+                local _resolvedImage = ""
+                local _hasIcon = false
+                local _lucideData = nil
+                if Page.Icon and Page.Icon ~= "" then
+                    if tonumber(Page.Icon) then
+                        _resolvedImage = "rbxassetid://" .. Page.Icon
+                        _hasIcon = true
+                    else
+                        local lm = getgenv and getgenv().LucideModule
+                        if lm then
+                            _lucideData = lm.GetAsset(Page.Icon, 24)
+                        end
+                        if _lucideData then
+                            _resolvedImage = _lucideData.Url
+                            _hasIcon = true
+                        end
+                    end
+                end
+
                 Items["Icon"] = Instances:Create("ImageLabel", {
                     Parent = Items["Inactive"].Instance,
                     Name = "\0",
                     ImageTransparency = 0.5,
                     BorderColor3 = FromRGB(0, 0, 0),
-                    Size = UDim2New(0, 22, 0, 22),
+                    Size = _hasIcon and UDim2New(0, 22, 0, 22) or UDim2New(0, 0, 0, 0),
                     AnchorPoint = Vector2New(0, 0.5),
-                    Image = "rbxassetid://"..Page.Icon,
+                    Image = _resolvedImage,
+                    ImageRectSize = _lucideData and _lucideData.ImageRectSize or Vector2.new(0, 0),
+                    ImageRectOffset = _lucideData and _lucideData.ImageRectOffset or Vector2.new(0, 0),
                     BackgroundTransparency = 1,
                     Position = UDim2New(0, 5, 0.5, 0),
                     ZIndex = 2,
                     BorderSizePixel = 0,
+                    Visible = _hasIcon,
                     BackgroundColor3 = FromRGB(255, 255, 255)
                 })  Items["Icon"]:AddToTheme({ImageColor3 = "Image"})
+                Page._hasIcon = _hasIcon
 
                 Items["Text"] = Instances:Create("TextLabel", {
                     Parent = Items["Inactive"].Instance,
@@ -17888,7 +17912,7 @@ local Library do
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = Page.Name,
                     BackgroundTransparency = 1,
-                    Position = UDim2New(0, 32, 0.5, 0),
+                    Position = _hasIcon and UDim2New(0, 32, 0.5, 0) or UDim2New(0, 7, 0.5, 0),
                     AutomaticSize = Enum.AutomaticSize.X,
                     BorderSizePixel = 0,
                     BackgroundColor3 = FromRGB(255, 255, 255)
@@ -17985,7 +18009,7 @@ local Library do
                     })
                 end
 
-                Items["Inactive"].Instance.Size = UDim2New(0, 25, 0, 32)
+                Items["Inactive"].Instance.Size = Page._hasIcon and UDim2New(0, 25, 0, 32) or UDim2New(0, 10, 0, 32)
             end
 
             local Debounce = false
@@ -18001,18 +18025,23 @@ local Library do
                 
                 Debounce = true 
 
+                local _iconWidth = Page._hasIcon and 27 or 7
+                local _collapsedWidth = Page._hasIcon and 25 or 10
                 if Bool then
                     Items["Text"].Instance.Visible = true 
-                    Items["Inactive"]:Tween(nil, {BackgroundTransparency = 0, Size = UDim2New(0, Items["Text"].Instance.TextBounds.X + 38, 0, 32)})
-                    Items["Icon"]:ChangeItemTheme({ImageColor3 = "Accent"})
-                    Items["Icon"]:Tween(nil, {ImageColor3 = Library.Theme.Accent, ImageTransparency = 0})
-
+                    Items["Inactive"]:Tween(nil, {BackgroundTransparency = 0, Size = UDim2New(0, Items["Text"].Instance.TextBounds.X + _iconWidth + 11, 0, 32)})
+                    if Page._hasIcon then
+                        Items["Icon"]:ChangeItemTheme({ImageColor3 = "Accent"})
+                        Items["Icon"]:Tween(nil, {ImageColor3 = Library.Theme.Accent, ImageTransparency = 0})
+                    end
                     Library.CurrentPage = Page
                 else
                     Items["Text"].Instance.Visible = false 
-                    Items["Inactive"]:Tween(nil, {BackgroundTransparency = 1, Size = UDim2New(0, 25, 0, 32)})
-                    Items["Icon"]:ChangeItemTheme({ImageColor3 = "Image"})
-                    Items["Icon"]:Tween(nil, {ImageColor3 = Library.Theme.Image, ImageTransparency = 0.5}) 
+                    Items["Inactive"]:Tween(nil, {BackgroundTransparency = 1, Size = UDim2New(0, _collapsedWidth, 0, 32)})
+                    if Page._hasIcon then
+                        Items["Icon"]:ChangeItemTheme({ImageColor3 = "Image"})
+                        Items["Icon"]:Tween(nil, {ImageColor3 = Library.Theme.Image, ImageTransparency = 0.5})
+                    end
                 end
 
                 local Descendants = Items["PageContent"].Instance:GetDescendants()
