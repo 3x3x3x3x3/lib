@@ -20065,8 +20065,6 @@ local Library do
 end 
 
 getgenv().Library = Library
-return Library
-
 -- SaveManager Injection --
 local cloneref = (cloneref or clonereference or function(instance: any)
     return instance
@@ -21014,3 +21012,4 @@ end
 
 SaveManager:BuildFolderTree()
 return SaveManager
+return Library
