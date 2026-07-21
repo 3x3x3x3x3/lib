@@ -7206,7 +7206,7 @@ local Library do
                     Name = "\0",
                     AnchorPoint = Vector2New(1, 0.5),
                     Size = UDim2New(0, 250, 0, 26),
-                    Position = UDim2New(1, -65, 0.5, 0),
+                    Position = UDim2New(1, -45, 0.5, 0),
                     BorderColor3 = FromRGB(0, 0, 0),
                     ZIndex = 2,
                     BorderSizePixel = 0,
@@ -8785,6 +8785,11 @@ local Library do
             return Playerlist
         end
 
+        Library.Pages.AddSection = function(self, Name, Side)
+            local data = type(Name) == "table" and Name or { Name = tostring(Name), Side = Side or 2 }
+            return self:Section(data)
+        end
+
         Library.Pages.Section = function(self, Data)
             Data = Data or { }
 
@@ -8930,6 +8935,27 @@ local Library do
 
             Section.Items = Items
             return setmetatable(Section, Library.Sections)
+        end
+
+        Library.Sections.AddInput = function(self, Flag, Data)
+            Data = Data or {}
+            Data.Flag = Flag
+            Data.Name = Data.Title or Data.Name or Flag
+            return self:Input(Data)
+        end
+
+        Library.Sections.AddDropdown = function(self, Flag, Data)
+            Data = Data or {}
+            Data.Flag = Flag
+            Data.Name = Data.Title or Data.Name or Flag
+            Data.Items = Data.Values or Data.Items or {}
+            return self:Dropdown(Data)
+        end
+
+        Library.Sections.AddButton = function(self, Data)
+            Data = Data or {}
+            Data.Name = Data.Title or Data.Name or "Button"
+            return self:Button(Data)
         end
 
         Library.Sections.Toggle = function(self, Data)
