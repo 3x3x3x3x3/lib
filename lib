@@ -9838,7 +9838,6 @@ local Library do
 end
 
 getgenv().Library = Library
-end)()
 
 local httpService = game:GetService("HttpService")
 
