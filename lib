@@ -21011,5 +21011,5 @@ function SaveManager:BuildConfigSection(Tab: any, IconName: string)
 end
 
 SaveManager:BuildFolderTree()
-return SaveManager
+getgenv().SaveManager = SaveManager
 return Library
