@@ -8937,18 +8937,35 @@ local Library do
             return setmetatable(Section, Library.Sections)
         end
 
+        Library.Sections.Input = function(self, Data)
+            Data = Data or {}
+            Data.Name = Data.Name or Data.Title or Data.Flag or "Input"
+            return self:Textbox(Data)
+        end
+
         Library.Sections.AddInput = function(self, Flag, Data)
             Data = Data or {}
-            Data.Flag = Flag
-            Data.Name = Data.Title or Data.Name or Flag
-            return self:Input(Data)
+            if type(Flag) == "string" then
+                Data.Flag = Flag
+                Data.Name = Data.Title or Data.Name or Flag
+            elseif type(Flag) == "table" then
+                Data = Flag
+                Data.Name = Data.Title or Data.Name
+            end
+            return self:Textbox(Data)
         end
 
         Library.Sections.AddDropdown = function(self, Flag, Data)
             Data = Data or {}
-            Data.Flag = Flag
-            Data.Name = Data.Title or Data.Name or Flag
-            Data.Items = Data.Values or Data.Items or {}
+            if type(Flag) == "string" then
+                Data.Flag = Flag
+                Data.Name = Data.Title or Data.Name or Flag
+                Data.Items = Data.Values or Data.Items or {}
+            elseif type(Flag) == "table" then
+                Data = Flag
+                Data.Name = Data.Title or Data.Name
+                Data.Items = Data.Values or Data.Items or {}
+            end
             return self:Dropdown(Data)
         end
 
@@ -8956,6 +8973,30 @@ local Library do
             Data = Data or {}
             Data.Name = Data.Title or Data.Name or "Button"
             return self:Button(Data)
+        end
+
+        Library.Sections.AddToggle = function(self, Flag, Data)
+            Data = Data or {}
+            if type(Flag) == "string" then
+                Data.Flag = Flag
+                Data.Name = Data.Title or Data.Name or Flag
+            elseif type(Flag) == "table" then
+                Data = Flag
+                Data.Name = Data.Title or Data.Name
+            end
+            return self:Toggle(Data)
+        end
+
+        Library.Sections.AddSlider = function(self, Flag, Data)
+            Data = Data or {}
+            if type(Flag) == "string" then
+                Data.Flag = Flag
+                Data.Name = Data.Title or Data.Name or Flag
+            elseif type(Flag) == "table" then
+                Data = Flag
+                Data.Name = Data.Title or Data.Name
+            end
+            return self:Slider(Data)
         end
 
         Library.Sections.Toggle = function(self, Data)
