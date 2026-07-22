@@ -5072,7 +5072,15 @@ local Library do
                     Update()
                 elseif type(Key) == "table" then
                     local RealKey = Key.Key == "Backspace" and "None" or Key.Key
-                    Keybind.Key = tostring(Key.Key)
+                    local kStr = tostring(RealKey)
+                    if kStr ~= "None" and not StringFind(kStr, "Enum") then
+                        if StringFind(kStr, "Mouse") then
+                            kStr = "Enum.UserInputType." .. kStr
+                        else
+                            kStr = "Enum.KeyCode." .. kStr
+                        end
+                    end
+                    Keybind.Key = kStr
 
                     local _setMode = Key.Mode and StringLower(tostring(Key.Mode)) or "toggle"
                     Keybind.Mode = string.lower(_setMode)
