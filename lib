@@ -3867,7 +3867,7 @@ local Library do
                             continue
                         end
 
-                        Value.ZIndex = Bool and 350 or (Value.ZIndex > 300 and Value.ZIndex - 50 or Value.ZIndex)
+                        Value.ZIndex = Bool and (Value.ZIndex + 50) or (Value.ZIndex > 350 and Value.ZIndex - 50 or Value.ZIndex)
 
                         if type(TransparencyProperty) == "table" then
                             for _, Property in TransparencyProperty do
@@ -4732,7 +4732,7 @@ local Library do
                             continue
                         end
 
-                        Value.ZIndex = Bool and 150 or (Value.ZIndex > 120 and Value.ZIndex - 30 or Value.ZIndex)
+                        Value.ZIndex = Bool and (Value.ZIndex + 50) or (Value.ZIndex > 250 and Value.ZIndex - 50 or Value.ZIndex)
 
                         if type(TransparencyProperty) == "table" then
                             for _, Property in TransparencyProperty do
@@ -4993,7 +4993,7 @@ local Library do
                         continue
                     end
 
-                    Value.ZIndex = Bool and 300 or (Value.ZIndex > 200 and Value.ZIndex - 100 or Value.ZIndex)
+                    Value.ZIndex = Bool and (Value.ZIndex + 100) or (Value.ZIndex > 250 and Value.ZIndex - 100 or Value.ZIndex)
 
                     if type(TransparencyProperty) == "table" then
                         for _, Property in TransparencyProperty do
