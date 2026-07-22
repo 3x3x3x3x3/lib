@@ -4682,12 +4682,11 @@ local Library do
 
                 local _1 = Dropdown:AddOption("Toggle")
                 local _2 = Dropdown:AddOption("Hold")
-                local _3 = Dropdown:AddOption("Always")
 
                 Modes = {
                     ["Toggle"] = _1, ["toggle"] = _1,
                     ["Hold"] = _2,   ["hold"] = _2,
-                    ["Always"] = _3, ["always"] = _3
+                    ["Always"] = _1, ["always"] = _1
                 }
 
                 local Debounce = false
@@ -4929,6 +4928,11 @@ local Library do
                     return
                 end
 
+                if Keybind.Value == "None" or Keybind.Key == "None" or not Keybind.Key then
+                    KeylistItem:SetVisibility(false)
+                    return
+                end
+
                 KeylistItem:SetText(Keybind.Value, Data.Name)
 
                 if Keybind.Mode == "hold" then
@@ -5028,10 +5032,26 @@ local Library do
             end
 
             function Keybind:Set(Key)
-                if StringFind(tostring(Key), "Enum") then
+                if Key == "None" or (typeof(Key) == "EnumItem" and (Key.Name == "Escape" or Key.Name == "Backspace")) then
+                    Keybind.Key = "None"
+                    Keybind.Value = "None"
+                    Items["KeyButton"].Instance.Text = "None"
+
+                    Library.Flags[Data.Flag] = {
+                        Mode = Keybind.Mode,
+                        Key = "None",
+                        Toggled = Keybind.Toggled
+                    }
+
+                    if Data.Callback then
+                        Library:SafeCall(Data.Callback, Keybind.Toggled)
+                    end
+
+                    Update()
+                elseif StringFind(tostring(Key), "Enum") then
                     Keybind.Key = tostring(Key)
 
-                    Key = Key.Name == "Backspace" and "None" or Key.Name
+                    Key = (Key.Name == "Backspace" or Key.Name == "Escape") and "None" or Key.Name
 
                     local KeyString = Keys[Keybind.Key] or StringGSub(Key, "Enum.", "") or "None"
                     local TextToDisplay = StringGSub(StringGSub(KeyString, "KeyCode.", ""), "UserInputType.", "") or "None"
@@ -5122,7 +5142,11 @@ local Library do
                 local InputBegan
                 InputBegan = UserInputService.InputBegan:Connect(function(Input)
                     if Input.UserInputType == Enum.UserInputType.Keyboard then
-                        Keybind:Set(Input.KeyCode)
+                        if Input.KeyCode == Enum.KeyCode.Escape or Input.KeyCode == Enum.KeyCode.Backspace then
+                            Keybind:Set("None")
+                        else
+                            Keybind:Set(Input.KeyCode)
+                        end
                     else
                         Keybind:Set(Input.UserInputType)
                     end
