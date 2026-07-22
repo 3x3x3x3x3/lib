@@ -3076,7 +3076,7 @@ local Library do
                         continue
                     end
 
-                    Value.ZIndex = Bool and (Value.ZIndex + 10) or (Value.ZIndex - 10)
+                    Value.ZIndex = Bool and 50 or (Value.ZIndex > 50 and Value.ZIndex - 40 or Value.ZIndex)
 
                     if type(TransparencyProperty) == "table" then
                         for _, Property in TransparencyProperty do
@@ -3143,7 +3143,11 @@ local Library do
             end
 
             if Data.Default then
-                Dropdown:Set(Data.Default)
+                local _default = Data.Default
+                if type(_default) == "number" and Data.Items and Data.Items[_default] then
+                    _default = Data.Items[_default]
+                end
+                Dropdown:Set(_default)
             end
 
             Library.SetFlags[Dropdown.Flag] = function(Value)
@@ -3166,8 +3170,15 @@ local Library do
 
                 Hue = 0,
                 Saturation = 0,
-                Value = 0,
+                Brightness = 0,
             }
+            -- Value property returns the Color3 for compatibility with Options.Flag.Value pattern
+            setmetatable(Colorpicker, {
+                __index = function(t, k)
+                    if k == "Value" then return rawget(t, "Color") end
+                    return rawget(t, k)
+                end
+            })
 
             local AnimationsDropdown
             local AnimationsDropdownItems
@@ -3249,7 +3260,7 @@ local Library do
                     Size = UDim2New(0, 219, 0, 282),
                     Position = UDim2New(0, Items["ColorpickerButton"].Instance.AbsolutePosition.X, 0, Items["ColorpickerButton"].Instance.AbsolutePosition.Y + 25),
                     BorderColor3 = FromRGB(0, 0, 0),
-                    ZIndex = 2,
+                    ZIndex = 100,
                     Visible = false,
                     BorderSizePixel = 0,
                     BackgroundColor3 = FromRGB(16, 18, 21)
@@ -3269,7 +3280,7 @@ local Library do
                     Image = "rbxassetid://76001605964586",
                     BackgroundTransparency = 1,
                     Position = UDim2New(1, -6, 0, 6),
-                    ZIndex = 10,
+                    ZIndex = 110,
                     BorderSizePixel = 0,
                     BackgroundColor3 = FromRGB(255, 255, 255)
                 })  Items["CloseButton"]:AddToTheme({ImageColor3 = "Image"})
@@ -3320,7 +3331,7 @@ local Library do
                     BorderSizePixel = 0,
                     Position = UDim2New(0, 8, 0, 8),
                     Size = UDim2New(1, -16, 1, -125),
-                    ZIndex = 2,
+                    ZIndex = 102,
                     TextSize = 14,
                     BackgroundColor3 = FromRGB(255, 125, 32)
                 })
@@ -3338,7 +3349,7 @@ local Library do
                     Image = Library:GetImage("Saturation"),
                     BackgroundTransparency = 1,
                     Size = UDim2New(1, 0, 1, 0),
-                    ZIndex = 2,
+                    ZIndex = 102,
                     BorderSizePixel = 0,
                     BackgroundColor3 = FromRGB(255, 255, 255)
                 })
@@ -3357,7 +3368,7 @@ local Library do
                     Image = Library:GetImage("Value"),
                     BackgroundTransparency = 1,
                     Position = UDim2New(0, -1, 0, 0),
-                    ZIndex = 3,
+                    ZIndex = 103,
                     BorderSizePixel = 0,
                     BackgroundColor3 = FromRGB(255, 255, 255)
                 })
@@ -3374,7 +3385,7 @@ local Library do
                     Size = UDim2New(0, 4, 0, 4),
                     Position = UDim2New(0, 5, 0, 5),
                     BorderColor3 = FromRGB(0, 0, 0),
-                    ZIndex = 3,
+                    ZIndex = 103,
                     BorderSizePixel = 0,
                     BackgroundColor3 = FromRGB(255, 255, 255)
                 })
@@ -3401,7 +3412,7 @@ local Library do
                     AnchorPoint = Vector2New(0, 1),
                     Position = UDim2New(0, 8, 1, -90),
                     Text = "",
-                    ZIndex = 2,
+                    ZIndex = 102,
                     BorderSizePixel = 0,
                     BackgroundColor3 = FromRGB(255, 255, 255)
                 })
@@ -3424,7 +3435,7 @@ local Library do
                     AnchorPoint = Vector2New(0, 0.5),
                     Position = UDim2New(0, 12, 0.5, 0),
                     Size = UDim2New(0, 3, 1, -8),
-                    ZIndex = 2,
+                    ZIndex = 102,
                     BorderSizePixel = 0,
                     BackgroundColor3 = FromRGB(255, 255, 255)
                 })
@@ -3454,7 +3465,7 @@ local Library do
                     BorderSizePixel = 0,
                     Position = UDim2New(0, 8, 1, -63),
                     Size = UDim2New(1, -16, 0, 18),
-                    ZIndex = 2,
+                    ZIndex = 102,
                     TextSize = 14,
                     BackgroundColor3 = FromRGB(255, 125, 32)
                 })
@@ -3472,7 +3483,7 @@ local Library do
                     AnchorPoint = Vector2New(0, 0.5),
                     Position = UDim2New(0, 3, 0.5, 0),
                     Size = UDim2New(0, 3, 1, -8),
-                    ZIndex = 3,
+                    ZIndex = 103,
                     BorderSizePixel = 0,
                     BackgroundColor3 = FromRGB(255, 255, 255)
                 })
@@ -3499,7 +3510,7 @@ local Library do
                     Image = Library:GetImage("Checkers"),
                     BackgroundTransparency = 1,
                     Size = UDim2New(1, 0, 1, 0),
-                    ZIndex = 2,
+                    ZIndex = 102,
                     BorderSizePixel = 0,
                     BackgroundColor3 = FromRGB(255, 255, 255)
                 })
@@ -3525,7 +3536,7 @@ local Library do
                         Size = UDim2New(1, -16, 0, 47),
                         Position = UDim2New(0, 8, 1, -8),
                         BorderColor3 = FromRGB(0, 0, 0),
-                        ZIndex = 2,
+                        ZIndex = 102,
                         BorderSizePixel = 0,
                         BackgroundColor3 = FromRGB(255, 255, 255)
                     })
@@ -3541,7 +3552,7 @@ local Library do
                         BackgroundTransparency = 1,
                         Size = UDim2New(0, 0, 0, 15),
                         BorderSizePixel = 0,
-                        ZIndex = 2,
+                        ZIndex = 102,
                         TextSize = 14,
                         BackgroundColor3 = FromRGB(255, 255, 255)
                     })  DropdownItems["Text"]:AddToTheme({TextColor3 = "Text"})
@@ -3555,7 +3566,7 @@ local Library do
                         AnchorPoint = Vector2New(0, 1),
                         Position = UDim2New(0, 0, 1, 0),
                         Size = UDim2New(1, 0, 0, 25),
-                        ZIndex = 2,
+                        ZIndex = 102,
                         BorderSizePixel = 0,
                         BackgroundColor3 = FromRGB(34, 39, 45)
                     })  DropdownItems["RealDropdown"]:AddToTheme({BackgroundColor3 = "Element"})
@@ -3855,7 +3866,7 @@ local Library do
                             continue
                         end
 
-                        Value.ZIndex = Bool and (Value.ZIndex + 10) or (Value.ZIndex - 10)
+                        Value.ZIndex = Bool and 350 or (Value.ZIndex > 300 and Value.ZIndex - 50 or Value.ZIndex)
 
                         if type(TransparencyProperty) == "table" then
                             for _, Property in TransparencyProperty do
@@ -3996,7 +4007,6 @@ local Library do
                 Colorpicker.IsOpen = Bool
                 Debounce = true
 
-                Items["ColorpickerWindow"].Instance.ZIndex = Bool and 100 or 0
                 Items["ColorpickerWindow"].Instance.Visible = Bool
                 Items["ColorpickerWindow"].Instance.Parent = Bool and Library.Holder.Instance or Library.UnusedHolder.Instance
 
@@ -4028,7 +4038,7 @@ local Library do
             end
 
             function Colorpicker:Update(IsFromAlpha)
-                local Hue, Saturation, Value = Colorpicker.Hue, Colorpicker.Saturation, Colorpicker.Value
+                local Hue, Saturation, Value = Colorpicker.Hue, Colorpicker.Saturation, Colorpicker.Brightness
                 local Color = FromHSV(Hue, Saturation, Value)
 
                 Colorpicker.Color = Color
@@ -4065,7 +4075,7 @@ local Library do
                 local ValueY = MathClamp(1 - (Input.Position.Y - Items["Palette"].Instance.AbsolutePosition.Y) / Items["Palette"].Instance.AbsoluteSize.Y, 0, 1)
 
                 Colorpicker.Saturation = ValueX
-                Colorpicker.Value = ValueY
+                Colorpicker.Brightness = ValueY
 
                 local SlideX = MathClamp((Input.Position.X - Items["Palette"].Instance.AbsolutePosition.X) / Items["Palette"].Instance.AbsoluteSize.X, 0, 0.98)
                 local SlideY = MathClamp((Input.Position.Y - Items["Palette"].Instance.AbsolutePosition.Y) / Items["Palette"].Instance.AbsoluteSize.Y, 0, 0.97)
@@ -4120,7 +4130,7 @@ local Library do
                     Color = FromHex(Color)
                 end
 
-                Colorpicker.Hue, Colorpicker.Saturation, Colorpicker.Value = Color:ToHSV()
+                Colorpicker.Hue, Colorpicker.Saturation, Colorpicker.Brightness = Color:ToHSV()
                 Colorpicker.Alpha = Alpha or 1
 
                 local ColorPositionX = MathClamp(1 - Colorpicker.Saturation, 0, 0.98)
@@ -4308,6 +4318,7 @@ local Library do
                     Position = UDim2New(0, Items["KeyButton"].Instance.AbsolutePosition.X, 0, Items["KeyButton"].Instance.AbsolutePosition.Y + 25),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Visible = false,
+                    ZIndex = 200,
                     Size = UDim2New(0, 195, 0, 93),
                     BorderSizePixel = 0,
                     BackgroundColor3 = FromRGB(16, 18, 21)
@@ -4339,7 +4350,7 @@ local Library do
                         Size = UDim2New(1, -16, 0, 47),
                         Position = UDim2New(0, 8, 0, 8),
                         BorderColor3 = FromRGB(0, 0, 0),
-                        ZIndex = 2,
+                        ZIndex = 202,
                         BorderSizePixel = 0,
                         BackgroundColor3 = FromRGB(255, 255, 255)
                     })
@@ -4355,7 +4366,7 @@ local Library do
                         BackgroundTransparency = 1,
                         Size = UDim2New(0, 0, 0, 15),
                         BorderSizePixel = 0,
-                        ZIndex = 2,
+                        ZIndex = 202,
                         TextSize = 14,
                         BackgroundColor3 = FromRGB(255, 255, 255)
                     })  DropdownItems["Text"]:AddToTheme({TextColor3 = "Text"})
@@ -4369,7 +4380,7 @@ local Library do
                         AnchorPoint = Vector2New(0, 1),
                         Position = UDim2New(0, 0, 1, 0),
                         Size = UDim2New(1, 0, 0, 25),
-                        ZIndex = 2,
+                        ZIndex = 202,
                         BorderSizePixel = 0,
                         BackgroundColor3 = FromRGB(34, 39, 45)
                     })  DropdownItems["RealDropdown"]:AddToTheme({BackgroundColor3 = "Element"})
@@ -4403,7 +4414,7 @@ local Library do
                         BackgroundTransparency = 1,
                         TextTruncate = Enum.TextTruncate.AtEnd,
                         BorderSizePixel = 0,
-                        ZIndex = 2,
+                        ZIndex = 202,
                         TextSize = 14,
                         BackgroundColor3 = FromRGB(255, 255, 255)
                     })  DropdownItems["Value"]:AddToTheme({TextColor3 = "Text"})
@@ -4420,7 +4431,7 @@ local Library do
                     Visible = false,
                         BackgroundTransparency = 1,
                         Position = UDim2New(1, -3, 0.5, 0),
-                        ZIndex = 2,
+                        ZIndex = 202,
                         BorderSizePixel = 0,
                         BackgroundColor3 = FromRGB(255, 255, 255)
                     })  DropdownItems["OpenIcon"]:AddToTheme({ImageColor3 = "Accent"})
@@ -4438,7 +4449,7 @@ local Library do
                         AutomaticSize = Enum.AutomaticSize.Y,
                         Position = UDim2New(0, 0, 1, 5),
                         BorderSizePixel = 0,
-                        ZIndex = 5,
+                        ZIndex = 205,
                         TextSize = 14,
                         BackgroundColor3 = FromRGB(22, 25, 29)
                     })  DropdownItems["OptionHolder"]:AddToTheme({BackgroundColor3 = "Inline"})
@@ -4503,7 +4514,7 @@ local Library do
                         BackgroundTransparency = 1,
                         BorderSizePixel = 0,
                         Size = UDim2New(1, 0, 0, 25),
-                        ZIndex = 5,
+                        ZIndex = 205,
                         TextSize = 14,
                         BackgroundColor3 = FromRGB(16, 18, 21)
                     })  OptionButton:AddToTheme({BackgroundColor3 = "Background"})
@@ -4521,7 +4532,7 @@ local Library do
                         BackgroundTransparency = 1,
                         Position = UDim2New(0, 3, 0.5, 0),
                         ImageTransparency = 1,
-                        ZIndex = 5,
+                        ZIndex = 205,
                         BorderSizePixel = 0,
                         BackgroundColor3 = FromRGB(255, 255, 255)
                     })  CheckImage:AddToTheme({ImageColor3 = "Accent"})
@@ -4538,7 +4549,7 @@ local Library do
                         FontFace = Library.Font,
                         TextTransparency = 0.5,
                         AnchorPoint = Vector2New(0, 0.5),
-                        ZIndex = 5,
+                        ZIndex = 205,
                         TextSize = 14,
                         Size = UDim2New(0, 0, 0, 15),
                         TextColor3 = FromRGB(255, 255, 255),
@@ -4648,11 +4659,17 @@ local Library do
 
                         DropdownItems["Value"].Instance.Text = TableConcat(Option, ", ")
                     else
-                        if not Dropdown.Options[Option] then
+                        -- Use Modes table for case-insensitive lookup (e.g. "toggle" -> "Toggle")
+                        local _resolvedOption = Option
+                        if not Dropdown.Options[_resolvedOption] and Modes[_resolvedOption] then
+                            _resolvedOption = Modes[_resolvedOption].Name
+                        end
+
+                        if not Dropdown.Options[_resolvedOption] then
                             return
                         end
 
-                        local OptionData = Dropdown.Options[Option]
+                        local OptionData = Dropdown.Options[_resolvedOption]
 
                         Dropdown.Value = OptionData.Name
                         Library.Flags[Dropdown.Flag] = OptionData.Name
@@ -4732,7 +4749,7 @@ local Library do
                             continue
                         end
 
-                        Value.ZIndex = Bool and (Value.ZIndex + 10) or (Value.ZIndex - 10)
+                        Value.ZIndex = Bool and 150 or (Value.ZIndex > 120 and Value.ZIndex - 30 or Value.ZIndex)
 
                         if type(TransparencyProperty) == "table" then
                             for _, Property in TransparencyProperty do
@@ -4774,7 +4791,7 @@ local Library do
                         BorderSizePixel = 0,
                         Position = UDim2New(0, 8, 0, 65),
                         Size = UDim2New(1, -16, 0, 20),
-                        ZIndex = 2,
+                        ZIndex = 202,
                         TextSize = 14,
                         BackgroundColor3 = FromRGB(255, 255, 255)
                     })
@@ -4793,7 +4810,7 @@ local Library do
                         BackgroundTransparency = 1,
                         Position = UDim2New(0, 0, 0.5, 0),
                         BorderColor3 = FromRGB(0, 0, 0),
-                        ZIndex = 2,
+                        ZIndex = 202,
                         TextSize = 14,
                         BackgroundColor3 = FromRGB(255, 255, 255)
                     })  ToggleItems["Text"]:AddToTheme({TextColor3 = "Text"})
@@ -4805,7 +4822,7 @@ local Library do
                         AnchorPoint = Vector2New(1, 0.5),
                         Position = UDim2New(1, 0, 0.5, 0),
                         Size = UDim2New(0, 20, 0, 20),
-                        ZIndex = 2,
+                        ZIndex = 202,
                         BorderSizePixel = 0,
                         BackgroundColor3 = FromRGB(34, 39, 45)
                     })  ToggleItems["Indicator"]:AddToTheme({BackgroundColor3 = "Element"})
@@ -4822,7 +4839,7 @@ local Library do
                         Size = UDim2New(1, -4, 1, -4),
                         Position = UDim2New(0, 2, 0, 2),
                         BorderColor3 = FromRGB(0, 0, 0),
-                        ZIndex = 2,
+                        ZIndex = 202,
                         BorderSizePixel = 0,
                         BackgroundColor3 = FromRGB(34, 39, 45)
                     })  ToggleItems["Inline"]:AddToTheme({BackgroundColor3 = "Element"})
@@ -4854,7 +4871,7 @@ local Library do
                         BackgroundTransparency = 1,
                         Position = UDim2New(0.5, 0, 0.5, 0),
                         ImageTransparency = 1,
-                        ZIndex = 2,
+                        ZIndex = 202,
                         BorderSizePixel = 0,
                         BackgroundColor3 = FromRGB(255, 255, 255),
                         ImageColor3 = FromRGB(0, 0, 0)
@@ -4911,7 +4928,7 @@ local Library do
                 Toggle:Set(true)
 
                 Dropdown.Callback = function(Value)
-                    Keybind.Mode = Value
+                    Keybind.Mode = string.lower(Value)
 
                     Library.Flags[Data.Flag] = {
                         Mode = Keybind.Mode,
@@ -4988,7 +5005,7 @@ local Library do
                         continue
                     end
 
-                    Value.ZIndex = Bool and 15 or 0
+                    Value.ZIndex = Bool and 300 or (Value.ZIndex > 200 and Value.ZIndex - 100 or Value.ZIndex)
 
                     if type(TransparencyProperty) == "table" then
                         for _, Property in TransparencyProperty do
@@ -5054,7 +5071,7 @@ local Library do
                     Keybind.Key = tostring(Key.Key)
 
                     local _setMode = Key.Mode and StringLower(tostring(Key.Mode)) or "toggle"
-                    Keybind.Mode = _setMode
+                    Keybind.Mode = string.lower(_setMode)
                     Keybind:SetMode(_setMode)
 
                     local KeyString = Keys[Keybind.Key] or StringGSub(tostring(RealKey), "Enum.", "") or RealKey
@@ -8640,7 +8657,7 @@ local Library do
                             continue
                         end
 
-                        Value.ZIndex = Bool and (Value.ZIndex + 10) or (Value.ZIndex - 10)
+                        Value.ZIndex = Bool and 50 or (Value.ZIndex > 40 and Value.ZIndex - 40 or Value.ZIndex)
 
                         if type(TransparencyProperty) == "table" then
                             for _, Property in TransparencyProperty do
