@@ -2731,7 +2731,7 @@ local Library do
                     FontFace = Library.Font,
                     TextColor3 = FromRGB(255, 255, 255),
                     BorderColor3 = FromRGB(0, 0, 0),
-                    Text = Data.Default or "Select...",
+                    Text = "--",
                     AnchorPoint = Vector2New(0, 0.5),
                     BackgroundTransparency = 1,
                     Size = UDim2New(1, -35, 0, 15),
@@ -3076,7 +3076,7 @@ local Library do
                         continue
                     end
 
-                    Value.ZIndex = Bool and 10 or 0
+                    Value.ZIndex = Bool and (Value.ZIndex + 10) or (Value.ZIndex - 10)
 
                     if type(TransparencyProperty) == "table" then
                         for _, Property in TransparencyProperty do
@@ -3855,7 +3855,7 @@ local Library do
                             continue
                         end
 
-                        Value.ZIndex = Bool and 10 or 0
+                        Value.ZIndex = Bool and (Value.ZIndex + 10) or (Value.ZIndex - 10)
 
                         if type(TransparencyProperty) == "table" then
                             for _, Property in TransparencyProperty do
@@ -4732,7 +4732,7 @@ local Library do
                             continue
                         end
 
-                        Value.ZIndex = Bool and 10 or 0
+                        Value.ZIndex = Bool and (Value.ZIndex + 10) or (Value.ZIndex - 10)
 
                         if type(TransparencyProperty) == "table" then
                             for _, Property in TransparencyProperty do
@@ -8640,7 +8640,7 @@ local Library do
                             continue
                         end
 
-                        Value.ZIndex = Bool and 10 or 0
+                        Value.ZIndex = Bool and (Value.ZIndex + 10) or (Value.ZIndex - 10)
 
                         if type(TransparencyProperty) == "table" then
                             for _, Property in TransparencyProperty do
