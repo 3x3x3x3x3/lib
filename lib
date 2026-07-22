@@ -3756,8 +3756,7 @@ local Library do
                         Name = Option,
                         Text = OptionText,
                         Button = OptionButton,
-                        Check = CheckImage
-                    }
+                                            }
 
                     function OptionData:Toggle(Status)
                         if Status == "Active" then
@@ -4048,7 +4047,8 @@ local Library do
 
                 Library.Flags[Data.Flag] = {
                     Alpha = Colorpicker.Alpha,
-                    Color = Colorpicker.HexValue
+                    Color = Colorpicker.HexValue,
+                    Color3 = Color
                 }
 
                 Items["ColorpickerButton"]:Tween(nil, {BackgroundColor3 = Color})
@@ -4521,23 +4521,6 @@ local Library do
                         BackgroundColor3 = FromRGB(16, 18, 21)
                     })  OptionButton:AddToTheme({BackgroundColor3 = "Background"})
 
-                    local CheckImage = Instances:Create("ImageLabel", {
-                        Parent = OptionButton.Instance,
-                        Name = "\0",
-                        ImageColor3 = FromRGB(170, 130, 255),
-                        ScaleType = Enum.ScaleType.Fit,
-                        BorderColor3 = FromRGB(0, 0, 0),
-                        Size = UDim2New(0, 18, 0, 18),
-                        Visible = true,
-                        AnchorPoint = Vector2New(0, 0.5),
-                        Image = "rbxassetid://116339777575852",
-                        BackgroundTransparency = 1,
-                        Position = UDim2New(0, 3, 0.5, 0),
-                        ImageTransparency = 1,
-                        ZIndex = 205,
-                        BorderSizePixel = 0,
-                        BackgroundColor3 = FromRGB(255, 255, 255)
-                    })  CheckImage:AddToTheme({ImageColor3 = "Accent"})
 
                     Instances:Create("UICorner", {
                         Parent = OptionButton.Instance,
@@ -4570,8 +4553,7 @@ local Library do
                         Name = Option,
                         Text = OptionText,
                         Button = OptionButton,
-                        Check = CheckImage
-                    }
+                                            }
 
                     function OptionData:Toggle(Status)
                         if Status == "Active" then
@@ -8550,8 +8532,7 @@ local Library do
                         Name = Option,
                         Text = OptionText,
                         Button = OptionButton,
-                        Check = CheckImage
-                    }
+                                            }
 
                     function OptionData:Toggle(Status)
                         if Status == "Active" then
@@ -9208,7 +9189,7 @@ Library.Sections.Toggle = function(self, Data)
 
                     Name = Data.Name or Data.name,
                     Default = Data.Default or Data.default,
-                    Alpha = Data.Alpha or Data.alpha or 0,
+                    Alpha = Data.Alpha or Data.alpha or 1,
                     Flag = Data.Flag or Data.flag or Library:NextFlag(),
                     Callback = Data.Callback or Data.callback or function() end,
 
@@ -9738,7 +9719,7 @@ Library.Sections.Toggle = function(self, Data)
 
                     Name = Data.Name or Data.name,
                     Default = Data.Default or Data.default,
-                    Alpha = Data.Alpha or Data.alpha or 0,
+                    Alpha = Data.Alpha or Data.alpha or 1,
                     Flag = Data.Flag or Data.flag or Library:NextFlag(),
                     Callback = Data.Callback or Data.callback or function() end,
 
