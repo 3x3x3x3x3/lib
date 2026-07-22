@@ -2614,6 +2614,7 @@ local Library do
             function Toggle:SetVisibility(Bool)
                 Items["Toggle"].Instance.Visible = Bool
             end
+            Toggle.SetVisible = Toggle.SetVisibility
 
             Items["Toggle"]:OnHover(function()
                 if Toggle.Value then return end
@@ -3101,6 +3102,7 @@ local Library do
             function Dropdown:SetVisibility(Bool)
                 Items["Dropdown"].Instance.Visible = Bool
             end
+            Dropdown.SetVisible = Dropdown.SetVisibility
 
             getgenv().Options[Dropdown.Flag] = Dropdown
 
@@ -9196,6 +9198,7 @@ Library.Sections.Toggle = function(self, Data)
             function Toggle:SetVisibility(Bool)
                 NewToggle:SetVisibility(Bool)
             end
+            Toggle.SetVisible = Toggle.SetVisibility
 
             function Toggle:Colorpicker(Data)
                 local Colorpicker = {
@@ -9640,6 +9643,7 @@ Library.Sections.Toggle = function(self, Data)
             function Dropdown:SetVisibility(Bool)
                 NewDropdown:SetVisibility(Bool)
             end
+            Dropdown.SetVisible = Dropdown.SetVisibility
 
             return Dropdown
         end
