@@ -4136,7 +4136,7 @@ local Library do
                 Colorpicker.Alpha = Alpha or 1
 
                 local ColorPositionX = MathClamp(1 - Colorpicker.Saturation, 0, 0.98)
-                local ColorPositionY = MathClamp(1 - Colorpicker.Value, 0, 0.97)
+                local ColorPositionY = MathClamp(1 - Colorpicker.Brightness, 0, 0.97)
 
                 local AlphaPositionX = MathClamp(Colorpicker.Alpha, 0, 0.98)
 
@@ -7334,7 +7334,7 @@ local Library do
                     Name = "\0",
                     AnchorPoint = Vector2New(1, 0.5),
                     Size = UDim2New(0, 250, 0, 26),
-                    Position = UDim2New(1, -48, 0.5, 0),
+                    Position = UDim2New(1, -48, 0.5, -2),
                     BorderColor3 = FromRGB(0, 0, 0),
                     ZIndex = 2,
                     BorderSizePixel = 0,
