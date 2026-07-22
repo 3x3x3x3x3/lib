@@ -7567,9 +7567,11 @@ local Library do
                     return
                 end
 
-                if tostring(Input.KeyCode) == Library.MenuKeybind
-                or tostring(Input.UserInputType) == Library.MenuKeybind then
-                    Window:SetOpen(not Window.IsOpen)
+                if not Library.Flags["MenuKeybind"] and not Library.Flags["UIKeybind"] then
+                    if tostring(Input.KeyCode) == Library.MenuKeybind
+                    or tostring(Input.UserInputType) == Library.MenuKeybind then
+                        Window:SetOpen(not Window.IsOpen)
+                    end
                 end
             end)
 
