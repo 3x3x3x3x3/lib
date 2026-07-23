@@ -1974,7 +1974,7 @@ local Library do
             Url = "https://github.com/sametexe001/luas/raw/refs/heads/main/fonts/InterSemibold.ttf"
         })
 
-            Library.UseCustomCursor = true
+            Library.UseCustomCursor = false
     Library.SetCustomCursor = function(self, Bool)
         self.UseCustomCursor = Bool
         if not Bool then
@@ -7471,12 +7471,20 @@ local Library do
                     Size = UDim2New(0, 20, 0, 20),
                     ZIndex = 99999,
                     BorderSizePixel = 0,
+                    Visible = false,
                     BackgroundColor3 = FromRGB(255, 255, 255)
                 })  Items["MouseImage"]:AddToTheme({ImageColor3 = "Accent"})
 
                 Library:Connect(RunService.RenderStepped, function()
-                    local MouseLocation = UserInputService:GetMouseLocation()
-                    
+                    if not IsMobile and Library.UseCustomCursor and Window.IsOpen then
+                        UserInputService.MouseIconEnabled = false
+                        Items["MouseImage"].Instance.Visible = true
+                        local MouseLocation = UserInputService:GetMouseLocation()
+                        Items["MouseImage"].Instance.Position = UDim2New(0, MouseLocation.X, 0, MouseLocation.Y - 36)
+                    else
+                        UserInputService.MouseIconEnabled = true
+                        Items["MouseImage"].Instance.Visible = false
+                    end
                 end)
             end
 
