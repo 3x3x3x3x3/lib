@@ -7033,7 +7033,7 @@ local Library do
                 Logo = Data.Logo or Data.logo or "135215559087473",
                 FadeSpeed = Data.FadeSpeed or Data.fadespeed or 0.2,
                 Version = Data.Version or Data.version or "v1.0.0 alpha",
-                Size = Data.Size or Data.size or (not IsMobile and UDim2New(0, 659, 0, 511) or UDim2New(0, 659, 0, 340)),
+                Size = Data.Size or Data.size or (UserInputService.TouchEnabled and UDim2New(0, 659, 0, 340) or UDim2New(0, 659, 0, 511)),
 
                 Pages = { },
                 SubPages = { },
@@ -7460,32 +7460,36 @@ local Library do
 
                 UserInputService.MouseIconEnabled = true
 
-                Items["MouseImage"] = Instances:Create("ImageLabel", {
-                    Parent = Library.Holder.Instance,
-                    Name = "\0",
-                    ScaleType = Enum.ScaleType.Fit,
-                    BorderColor3 = FromRGB(0, 0, 0),
-                    Image = "rbxassetid://136489814131946",
-                    BackgroundTransparency = 1,
-                    Position = UDim2New(0, 0, 0, 0),
-                    Size = UDim2New(0, 20, 0, 20),
-                    ZIndex = 99999,
-                    BorderSizePixel = 0,
-                    Visible = false,
-                    BackgroundColor3 = FromRGB(255, 255, 255)
-                })  Items["MouseImage"]:AddToTheme({ImageColor3 = "Accent"})
+                if not UserInputService.TouchEnabled and Library.UseCustomCursor then
+                    Items["MouseImage"] = Instances:Create("ImageLabel", {
+                        Parent = Library.Holder.Instance,
+                        Name = "\0",
+                        ScaleType = Enum.ScaleType.Fit,
+                        BorderColor3 = FromRGB(0, 0, 0),
+                        Image = "rbxassetid://136489814131946",
+                        BackgroundTransparency = 1,
+                        Position = UDim2New(0, 0, 0, 0),
+                        Size = UDim2New(0, 20, 0, 20),
+                        ZIndex = 99999,
+                        BorderSizePixel = 0,
+                        Visible = false,
+                        BackgroundColor3 = FromRGB(255, 255, 255)
+                    })  Items["MouseImage"]:AddToTheme({ImageColor3 = "Accent"})
 
-                Library:Connect(RunService.RenderStepped, function()
-                    if not IsMobile and Library.UseCustomCursor and Window.IsOpen then
-                        UserInputService.MouseIconEnabled = false
-                        Items["MouseImage"].Instance.Visible = true
-                        local MouseLocation = UserInputService:GetMouseLocation()
-                        Items["MouseImage"].Instance.Position = UDim2New(0, MouseLocation.X, 0, MouseLocation.Y - 36)
-                    else
-                        UserInputService.MouseIconEnabled = true
-                        Items["MouseImage"].Instance.Visible = false
-                    end
-                end)
+                    Library:Connect(RunService.RenderStepped, function()
+                        if Library.UseCustomCursor and Window.IsOpen and Items["MouseImage"] then
+                            UserInputService.MouseIconEnabled = false
+                            Items["MouseImage"].Instance.Visible = true
+                            local MouseLocation = UserInputService:GetMouseLocation()
+                            Items["MouseImage"].Instance.Position = UDim2New(0, MouseLocation.X, 0, MouseLocation.Y - 36)
+                        else
+                            UserInputService.MouseIconEnabled = true
+                            if Items["MouseImage"] then
+                                Items["MouseImage"].Instance.Visible = false
+                            end
+                        end
+                    end)
+                end
             end
 
             local Debounce = false
